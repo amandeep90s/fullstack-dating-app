@@ -1,4 +1,11 @@
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "StreamMatch - Modern Dating App",
+  description:
+    "Connect with like-minded people in your area. Join StreamMatch today and find meaningful connections.",
+};
 
 export default function Home() {
   return (
@@ -11,6 +18,7 @@ export default function Home() {
           width={180}
           height={38}
           priority
+          sizes="180px"
         />
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">

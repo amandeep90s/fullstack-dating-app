@@ -9,6 +9,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  error: string | null;
   signOut: () => Promise<void>;
 }
 
@@ -16,7 +17,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const supabase = createClient();
   const router = useRouter();
 
@@ -28,17 +30,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         } = await supabase.auth.getSession();
 
         setUser(session?.user ?? null);
+        setError(null);
 
         const {
           data: { subscription },
         } = supabase.auth.onAuthStateChange(async (event, session) => {
           setUser(session?.user ?? null);
+          if (event === "SIGNED_OUT") {
+            setError(null);
+          }
         });
         return () => {
           subscription.unsubscribe();
         };
-      } catch (error) {
-        console.error(error);
+      } catch (error: unknown) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "Failed to initialize authentication";
+        console.error("Auth initialization error:", error);
+        setError(errorMessage);
+        setUser(null);
       } finally {
         setLoading(false);
       }
@@ -58,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signOut }}>
+    <AuthContext.Provider value={{ user, loading, error, signOut }}>
       {children}
     </AuthContext.Provider>
   );
