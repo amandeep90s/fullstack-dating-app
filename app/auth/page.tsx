@@ -1,6 +1,6 @@
 "use client";
 
-import { FullPageLoader, LoadingSpinner } from "@/components/loading";
+import { FullPageLoader } from "@/components/loading";
 import { useAuth } from "@/contexts/auth-context";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/utils/helpers";
@@ -233,16 +233,7 @@ export default function AuthPage() {
               "focus:ring-pink-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             )}
           >
-            {loading ? (
-              <div className="flex items-center space-x-2">
-                <LoadingSpinner size="sm" />
-                <span>Loading...</span>
-              </div>
-            ) : isSignUp ? (
-              "Sign Up"
-            ) : (
-              "Sign In"
-            )}
+            {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
           </button>
         </form>
 
