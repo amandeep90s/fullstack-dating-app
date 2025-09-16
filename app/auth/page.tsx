@@ -107,24 +107,35 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-100 to-red-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="max-w-md w-full space-y-8 p-8">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+    <div
+      className={cn(
+        "min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-100 to-red-100",
+        "dark:from-gray-900 dark:to-gray-800"
+      )}
+    >
+      <div className={cn("max-w-md w-full space-y-8 p-8")}>
+        <div className={cn("text-center")}>
+          <h1
+            className={cn(
+              "text-4xl font-bold text-gray-900 dark:text-white mb-2"
+            )}
+          >
             StreamMatch
           </h1>
 
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className={cn("text-gray-600 dark:text-gray-400")}>
             {isSignUp ? "Create Your Account" : "Sign in to your account"}
           </p>
         </div>
 
-        <form className="space-y-6" onSubmit={handleAuth}>
+        <form className={cn("space-y-6")} onSubmit={handleAuth}>
           {isSignUp && (
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className={cn(
+                  "block text-sm font-medium text-gray-700 dark:text-gray-300"
+                )}
               >
                 Name
               </label>
@@ -138,7 +149,8 @@ export default function AuthPage() {
                 placeholder="Enter your name"
                 className={cn(
                   "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm",
-                  "placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-800 dark:text-white",
+                  "placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500",
+                  "dark:bg-gray-800 dark:text-white",
                   validationErrors.name
                     ? "border-red-500 dark:border-red-500"
                     : "border-gray-300 dark:border-gray-600"
@@ -147,7 +159,9 @@ export default function AuthPage() {
                 autoComplete="name"
               />
               {validationErrors.name && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                <p
+                  className={cn("mt-1 text-sm text-red-600 dark:text-red-400")}
+                >
                   {validationErrors.name}
                 </p>
               )}
@@ -156,7 +170,9 @@ export default function AuthPage() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              className={cn(
+                "block text-sm font-medium text-gray-700 dark:text-gray-300"
+              )}
             >
               Email
             </label>
@@ -170,7 +186,8 @@ export default function AuthPage() {
               placeholder="Enter your email"
               className={cn(
                 "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm",
-                "placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-800 dark:text-white",
+                "placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500",
+                "dark:bg-gray-800 dark:text-white",
                 validationErrors.email
                   ? "border-red-500 dark:border-red-500"
                   : "border-gray-300 dark:border-gray-600"
@@ -179,7 +196,7 @@ export default function AuthPage() {
               autoComplete="email"
             />
             {validationErrors.email && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              <p className={cn("mt-1 text-sm text-red-600 dark:text-red-400")}>
                 {validationErrors.email}
               </p>
             )}
@@ -188,7 +205,9 @@ export default function AuthPage() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              className={cn(
+                "block text-sm font-medium text-gray-700 dark:text-gray-300"
+              )}
             >
               Password
             </label>
@@ -202,7 +221,8 @@ export default function AuthPage() {
               placeholder="Enter your password"
               className={cn(
                 "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm",
-                "placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-800 dark:text-white",
+                "placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500",
+                "dark:bg-gray-800 dark:text-white",
                 validationErrors.password
                   ? "border-red-500 dark:border-red-500"
                   : "border-gray-300 dark:border-gray-600"
@@ -211,14 +231,18 @@ export default function AuthPage() {
               autoComplete={isSignUp ? "new-password" : "current-password"}
             />
             {validationErrors.password && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              <p className={cn("mt-1 text-sm text-red-600 dark:text-red-400")}>
                 {validationErrors.password}
               </p>
             )}
           </div>
 
           {error && (
-            <div className="text-red-600 text-center dark:text-red-400 text-sm">
+            <div
+              className={cn(
+                "text-red-600 text-center dark:text-red-400 text-sm"
+              )}
+            >
               {error}
             </div>
           )}
@@ -237,7 +261,7 @@ export default function AuthPage() {
           </button>
         </form>
 
-        <div className="text-center">
+        <div className={cn("text-center")}>
           <button
             type="button"
             onClick={() => {

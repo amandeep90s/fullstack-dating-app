@@ -2,6 +2,7 @@
 
 import { FullPageLoader } from "@/components/loading";
 import { getCurrentUserProfile } from "@/lib/actions/profile";
+import { cn } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -72,5 +73,14 @@ export default function EditProfilePage() {
     return <FullPageLoader text="Loading profile..." />;
   }
 
-  return <div>Edit Profile Page</div>;
+  return (
+    <div
+      className={cn(
+        "min-h-screen bg-gradient-to-br from-pink-50 to-red-50",
+        "dark:from-gray-900 dark:to-gray-800"
+      )}
+    >
+      Edit Profile Page
+    </div>
+  );
 }
