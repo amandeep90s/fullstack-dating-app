@@ -1,6 +1,7 @@
 "use client";
 
 import { getCurrentUserProfile } from "@/lib/actions/profile";
+import { calculateAge } from "@/lib/helpers/calculate-age";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -59,6 +60,43 @@ export default function ProfilePage() {
     loadProfile();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-red-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto" />
+          <p className="mt-4 text-gray-600 dark:text-gray-400">
+            Loading your profile...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !profile) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-red-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-8">
+          <div className="w-24 h-24 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span className="text-4xl">❌</span>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Profile not found
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            {error || "Unable to load your profile. Please try again."}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-gradient-to-r from-pink-500 to-red-500 text-white font-semibold py-3 px-6 rounded-full hover:from-pink-600 hover:to-red-600 transition-all duration-200"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 to-red-50 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 py-8">
@@ -79,8 +117,8 @@ export default function ProfilePage() {
                   <div className="relative">
                     <div className="w-24 h-24 rounded-full overflow-hidden">
                       <img
-                        src={"/default-avatar.png"}
-                        alt="Full name"
+                        src={profile.avatar_url || "/default-avatar.png"}
+                        alt={profile.full_name}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -88,13 +126,14 @@ export default function ProfilePage() {
 
                   <div className="flex-1">
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                      Amandeep Singh
+                      {profile.full_name}, {calculateAge(profile.birthdate)}
                     </h2>
                     <p className="text-gray-600 dark:text-gray-400 mb-2">
-                      @amandeep90s
+                      @{profile.username}
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-500">
-                      Member since Jan 2023
+                      Member since{" "}
+                      {new Date(profile.created_at).toLocaleDateString("en-US")}
                     </p>
                   </div>
                 </div>
@@ -105,7 +144,7 @@ export default function ProfilePage() {
                       About Me
                     </h3>
                     <p className="text-gray-600 dark:text-white leading-relaxed">
-                      No bio added yet
+                      {profile.bio || "No bio added yet."}
                     </p>
                   </div>
 
@@ -125,7 +164,7 @@ export default function ProfilePage() {
                           className="text-gray-900 dark:text-white capitalize"
                           id="gender"
                         >
-                          Male
+                          {profile.gender}
                         </p>
                       </div>
                       <div>
@@ -139,7 +178,7 @@ export default function ProfilePage() {
                           className="text-gray-900 dark:text-white capitalize"
                           id="birthday"
                         >
-                          Jan 1, 1990
+                          {new Date(profile.birthdate).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
@@ -162,7 +201,8 @@ export default function ProfilePage() {
                           className="text-gray-900 dark:text-white"
                           id="age-range"
                         >
-                          25 - 35 years
+                          {profile.preferences.age_range.min} -{" "}
+                          {profile.preferences.age_range.max} years
                         </p>
                       </div>
                       <div>
@@ -176,7 +216,7 @@ export default function ProfilePage() {
                           className="text-gray-900 dark:text-white capitalize"
                           id="distance"
                         >
-                          Up to 50 miles
+                          Up to {profile.preferences.distance} km
                         </p>
                       </div>
                     </div>
@@ -237,12 +277,12 @@ export default function ProfilePage() {
                   Account
                 </h3>
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700">
+                  <div className="flex flex-col justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700">
                     <span className="text-gray-900 dark:text-white">
                       Username
                     </span>
-                    <span className="text-gray-500 dark:text-gray-400">
-                      @amandeep90s
+                    <span className="text-gray-500 overflow-hidden text-ellipsis dark:text-gray-400">
+                      @{profile.username}
                     </span>
                   </div>
                 </div>
