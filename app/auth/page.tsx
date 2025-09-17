@@ -1,6 +1,6 @@
 "use client";
 
-import { FullPageLoader } from "@/components/loading";
+import { FullPageLoader } from "@/components";
 import { useAuth } from "@/contexts/auth-context";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/utils/helpers";

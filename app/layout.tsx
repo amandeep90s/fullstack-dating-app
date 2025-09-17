@@ -1,5 +1,4 @@
-import { ErrorBoundary } from "@/components/error-boundary";
-import Navbar from "@/components/Navbar";
+import { ErrorBoundary, Navbar } from "@/components";
 import { AuthProvider } from "@/contexts/auth-context";
 import { cn } from "@/utils/helpers";
 import type { Metadata } from "next";

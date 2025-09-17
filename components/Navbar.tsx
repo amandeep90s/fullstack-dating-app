@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { cn } from "@/utils/helpers";
 import Link from "next/link";
 
-export default function Navbar() {
+export function Navbar() {
   const { user, signOut } = useAuth();
 
   return (

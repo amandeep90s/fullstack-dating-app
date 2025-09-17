@@ -1,6 +1,6 @@
 "use client";
 
-import { FullPageLoader } from "@/components/loading";
+import { FullPageLoader } from "@/components";
 import { getCurrentUserProfile } from "@/lib/actions/profile";
 import { cn } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
