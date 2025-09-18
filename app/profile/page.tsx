@@ -43,7 +43,6 @@ export default function ProfilePage() {
   useEffect(() => {
     async function loadProfile() {
       try {
-        setLoading(true);
         const profileData = await getCurrentUserProfile();
         if (profileData) {
           setProfile(profileData);
