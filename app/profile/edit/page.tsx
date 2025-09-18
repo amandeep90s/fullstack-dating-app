@@ -1,7 +1,10 @@
 "use client";
 
-import { FullPageLoader } from "@/components";
-import { getCurrentUserProfile } from "@/lib/actions/profile";
+import { FullPageLoader, PhotoUpload } from "@/components";
+import {
+  getCurrentUserProfile,
+  updateUserProfile,
+} from "@/lib/actions/profile";
 import { cn } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -47,12 +50,16 @@ export default function EditProfilePage() {
 
   async function handleFormSubmit(event: React.FormEvent) {
     event.preventDefault();
-
     setSaving(true);
     setError(null);
 
     try {
-      // TODO: Implement profile update logic here
+      const result = await updateUserProfile(formData);
+      if (result.success) {
+        router.push("/profile");
+      } else {
+        setError(result.error ?? "Failed to update profile");
+      }
     } catch (error) {
       setError("Failed to update profile");
     } finally {
@@ -119,7 +126,11 @@ export default function EditProfilePage() {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  {/* Photo Upload */}
+                  <PhotoUpload
+                    onPhotoUploaded={(url) => {
+                      setFormData((prev) => ({ ...prev, avatar_url: url }));
+                    }}
+                  />
                 </div>
 
                 <div>
