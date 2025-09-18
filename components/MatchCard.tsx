@@ -1,13 +1,16 @@
-import { UserProfile } from '@/app/profile/page';
+import type { UserProfile } from '@/app/profile/page';
 import { calculateAge } from '@/lib/helpers/calculate-age';
 import { cn } from '@/utils/helpers';
 import Image from 'next/image';
+import { memo } from 'react';
 
 interface MatchCardProps {
   user: UserProfile;
 }
 
-export default function MatchCard({ user }: MatchCardProps) {
+const MatchCard = memo(function MatchCard({ user }: MatchCardProps) {
+  const userAge = calculateAge(user.birthdate);
+
   return (
     <div className={cn('relative mx-auto w-full max-w-sm')}>
       <div className={cn('card-swipe aspect-[3/4] overflow-hidden')}>
@@ -17,7 +20,9 @@ export default function MatchCard({ user }: MatchCardProps) {
             alt={user.full_name}
             fill
             className={cn('object-cover transition-opacity duration-300')}
-            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
           />
 
           <div
@@ -30,7 +35,7 @@ export default function MatchCard({ user }: MatchCardProps) {
             <div className={cn('flex items-end justify-between')}>
               <div>
                 <h2 className={cn('mb-1 text-2xl font-bold')}>
-                  {user.full_name}, {calculateAge(user.birthdate)}
+                  {user.full_name}, {userAge}
                 </h2>
                 <p className={cn('mb-2 text-sm opacity-90')}>@{user.username}</p>
                 <p className={cn('text-sm leading-relaxed')}>{user.bio}</p>
@@ -41,4 +46,6 @@ export default function MatchCard({ user }: MatchCardProps) {
       </div>
     </div>
   );
-}
+});
+
+export default MatchCard;
