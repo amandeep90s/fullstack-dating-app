@@ -39,7 +39,9 @@ export default function MatchesPage() {
   }
 
   async function handlePass() {
-    //
+    if (currentIndex < potentialMatches.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    }
   }
 
   function handleCloseMatchNotification() {
@@ -55,7 +57,41 @@ export default function MatchesPage() {
   }
 
   if (currentIndex >= potentialMatches.length) {
-    return <h1>Loading...</h1>;
+    return (
+      <div
+        className={cn(
+          'flex h-full items-center justify-center bg-gradient-to-br from-pink-50 to-red-50',
+          'dark:from-gray-900 dark:to-gray-800'
+        )}
+      >
+        <div className={cn('mx-auto max-w-md p-8 text-center')}>
+          <div
+            className={cn(
+              'mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-r from-pink-500 to-red-500'
+            )}
+          >
+            <span className="text-4xl">💕</span>
+          </div>
+          <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+            No more profiles to show
+          </h2>
+          <p className={cn('mb-6 text-gray-600 dark:text-gray-400')}>
+            Check back later for new matches, or try adjusting your preferences!
+          </p>
+          <button
+            onClick={() => setCurrentIndex(0)}
+            className={cn(
+              'rounded-full bg-gradient-to-r from-pink-500 to-red-500 px-6 py-3 font-semibold',
+              'text-white transition-all duration-200 hover:from-pink-600 hover:to-red-600'
+            )}
+            type="button"
+          >
+            Refresh
+          </button>
+        </div>
+        {showMatchNotification && matchedUser && <MatchNotification />}
+      </div>
+    );
   }
 
   const currentPotentialMatch = potentialMatches[currentIndex];
@@ -107,7 +143,7 @@ export default function MatchesPage() {
         <div className={cn('mx-auto max-w-md')}>
           <MatchCard user={currentPotentialMatch} />
           <div className={cn('mt-8')}>
-            <MatchButtons />
+            <MatchButtons onLike={handleLike} onDislike={handlePass} />
           </div>
         </div>
 
