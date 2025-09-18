@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useAuth } from "@/contexts/auth-context";
-import { cn } from "@/utils/helpers";
-import Link from "next/link";
+import { useAuth } from '@/contexts/auth-context';
+import { cn } from '@/utils/helpers';
+import Link from 'next/link';
 
 export function Navbar() {
   const { user, signOut } = useAuth();
@@ -10,16 +10,16 @@ export function Navbar() {
   return (
     <nav
       className={cn(
-        "relative z-50 bg-slate-900 border-b border-gray-200/50 dark:border-gray-700/50"
+        'relative z-50 border-b border-gray-200/50 bg-slate-900 dark:border-gray-700/50'
       )}
     >
-      <div className={cn("container mx-auto px-6")}>
-        <div className={cn("flex items-center justify-between h-16")}>
-          <Link href="/" className={cn("flex items-center space-x-3")}>
+      <div className={cn('container mx-auto px-6')}>
+        <div className={cn('flex h-16 items-center justify-between')}>
+          <Link href="/" className={cn('flex items-center space-x-3')}>
             <span
               className={cn(
-                "text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700",
-                "dark:from-white dark:to-gray-200 bg-clip-text text-transparent"
+                'bg-gradient-to-r from-gray-900 to-gray-700 text-xl font-bold',
+                'bg-clip-text text-transparent dark:from-white dark:to-gray-200'
               )}
             >
               StreamMatch
@@ -28,12 +28,12 @@ export function Navbar() {
 
           {/* Only show navigation is user is authenticated */}
           {user && (
-            <div className={cn("hidden md:flex items-center space-x-8")}>
+            <div className={cn('hidden items-center space-x-8 md:flex')}>
               <Link
                 href="/matches"
                 className={cn(
-                  "text-gray-700 dark:text-gray-300 hover:text-pink-600",
-                  "dark:hover:text-pink-400 font-medium transition-colors duration-200"
+                  'text-gray-700 hover:text-pink-600 dark:text-gray-300',
+                  'font-medium transition-colors duration-200 dark:hover:text-pink-400'
                 )}
               >
                 Discover
@@ -41,8 +41,8 @@ export function Navbar() {
               <Link
                 href="/matches/list"
                 className={cn(
-                  "text-gray-700 dark:text-gray-300 hover:text-pink-600",
-                  "dark:hover:text-pink-400 font-medium transition-colors duration-200"
+                  'text-gray-700 hover:text-pink-600 dark:text-gray-300',
+                  'font-medium transition-colors duration-200 dark:hover:text-pink-400'
                 )}
               >
                 Matches
@@ -50,8 +50,8 @@ export function Navbar() {
               <Link
                 href="/chat"
                 className={cn(
-                  "text-gray-700 dark:text-gray-300 hover:text-pink-600",
-                  "dark:hover:text-pink-400 font-medium transition-colors duration-200"
+                  'text-gray-700 hover:text-pink-600 dark:text-gray-300',
+                  'font-medium transition-colors duration-200 dark:hover:text-pink-400'
                 )}
               >
                 Messages
@@ -59,8 +59,8 @@ export function Navbar() {
               <Link
                 href="/profile"
                 className={cn(
-                  "text-gray-700 dark:text-gray-300 hover:text-pink-600",
-                  "dark:hover:text-pink-400 font-medium transition-colors duration-200"
+                  'text-gray-700 hover:text-pink-600 dark:text-gray-300',
+                  'font-medium transition-colors duration-200 dark:hover:text-pink-400'
                 )}
               >
                 Profile
@@ -73,8 +73,8 @@ export function Navbar() {
               type="button"
               onClick={signOut}
               className={cn(
-                "px-4 py-2 bg-gradient-to-r from-pink-500 to-red-500 text-white text-sm font-medium cursor-pointer rounded-lg",
-                "hover:from-pink-600 hover:to-red-600 transition-all duration-200 shadow-md hover:shadow-lg"
+                'cursor-pointer rounded-lg bg-gradient-to-r from-pink-500 to-red-500 px-4 py-2 text-sm font-medium text-white',
+                'shadow-md transition-all duration-200 hover:from-pink-600 hover:to-red-600 hover:shadow-lg'
               )}
             >
               Sign Out
@@ -83,8 +83,8 @@ export function Navbar() {
             <Link
               href="/auth"
               className={cn(
-                "px-4 py-2 bg-gradient-to-r from-pink-500 to-red-500 text-white text-sm font-medium cursor-pointer rounded-lg",
-                "hover:from-pink-600 hover:to-red-600 transition-all duration-200 shadow-md hover:shadow-lg"
+                'cursor-pointer rounded-lg bg-gradient-to-r from-pink-500 to-red-500 px-4 py-2 text-sm font-medium text-white',
+                'shadow-md transition-all duration-200 hover:from-pink-600 hover:to-red-600 hover:shadow-lg'
               )}
             >
               Sign In

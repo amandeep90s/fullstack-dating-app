@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { createClient } from "@/lib/supabase/client";
-import { User } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
+import { createClient } from '@/lib/supabase/client';
+import { User } from '@supabase/supabase-js';
+import { useRouter } from 'next/navigation';
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from 'react';
 
 interface AuthContextType {
   user: User | null;
@@ -36,7 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           data: { subscription },
         } = supabase.auth.onAuthStateChange(async (event, session) => {
           setUser(session?.user ?? null);
-          if (event === "SIGNED_OUT") {
+          if (event === 'SIGNED_OUT') {
             setError(null);
           }
         });
@@ -45,10 +45,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         };
       } catch (error: unknown) {
         const errorMessage =
-          error instanceof Error
-            ? error.message
-            : "Failed to initialize authentication";
-        console.error("Auth initialization error:", error);
+          error instanceof Error ? error.message : 'Failed to initialize authentication';
+        console.error('Auth initialization error:', error);
         setError(errorMessage);
         setUser(null);
       } finally {
@@ -63,9 +61,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await supabase.auth.signOut();
 
-      router.push("/auth");
+      router.push('/auth');
     } catch (error) {
-      console.error("Error signing out:", error);
+      console.error('Error signing out:', error);
     }
   }
 
@@ -79,7 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 }

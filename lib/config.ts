@@ -9,23 +9,23 @@ function validateConfig() {
   const missingVars = [];
 
   if (!config.supabaseUrl) {
-    missingVars.push("NEXT_PUBLIC_SUPABASE_URL");
+    missingVars.push('NEXT_PUBLIC_SUPABASE_URL');
   }
 
   if (!config.supabaseAnonKey) {
-    missingVars.push("NEXT_PUBLIC_SUPABASE_ANON_KEY");
+    missingVars.push('NEXT_PUBLIC_SUPABASE_ANON_KEY');
   }
 
   if (missingVars.length > 0) {
     throw new Error(
-      `Missing required environment variables: ${missingVars.join(", ")}\n` +
-        "Please check your .env.local file."
+      `Missing required environment variables: ${missingVars.join(', ')}\n` +
+        'Please check your .env.local file.'
     );
   }
 }
 
 // Validate on import (client-side only)
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   validateConfig();
 }
 

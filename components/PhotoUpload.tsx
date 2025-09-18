@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { uploadProfilePhoto } from "@/lib/actions/profile";
-import { cn } from "@/utils/helpers";
-import React, { useRef, useState } from "react";
+import { uploadProfilePhoto } from '@/lib/actions/profile';
+import { cn } from '@/utils/helpers';
+import React, { useRef, useState } from 'react';
 
 type PhotoUploadProps = {
   onPhotoUploaded: (url: string) => void;
@@ -17,14 +17,14 @@ export function PhotoUpload({ onPhotoUploaded }: PhotoUploadProps) {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith("image/")) {
-      setError("Please select a valid image file.");
+    if (!file.type.startsWith('image/')) {
+      setError('Please select a valid image file.');
       return;
     }
 
     if (file.size > 1 * 1024 * 1024) {
       // 1MB limit
-      setError("File size exceeds 1MB limit.");
+      setError('File size exceeds 1MB limit.');
       return;
     }
 
@@ -36,10 +36,10 @@ export function PhotoUpload({ onPhotoUploaded }: PhotoUploadProps) {
       if (result.success && result.url) {
         onPhotoUploaded(result.url);
       } else {
-        setError(result.error ?? "Failed to upload photo");
+        setError(result.error ?? 'Failed to upload photo');
       }
     } catch (error) {
-      setError("Failed to change photo");
+      setError('Failed to change photo');
     } finally {
       setUploading(false);
     }
@@ -50,7 +50,7 @@ export function PhotoUpload({ onPhotoUploaded }: PhotoUploadProps) {
   }
 
   return (
-    <div className={cn("absolute bottom-0 right-0")}>
+    <div className={cn('absolute right-0 bottom-0')}>
       <input
         type="file"
         name="profilePhoto"
@@ -67,19 +67,14 @@ export function PhotoUpload({ onPhotoUploaded }: PhotoUploadProps) {
         disabled={uploading}
         title="Change Photo"
         className={cn(
-          "absolute bottom-0 right-0 bg-pink-500 text-white p-2 rounded-full hover:bg-pink-600 transition-colors",
-          "duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          'absolute right-0 bottom-0 rounded-full bg-pink-500 p-2 text-white transition-colors hover:bg-pink-600',
+          'duration-200 disabled:cursor-not-allowed disabled:opacity-50'
         )}
       >
         {uploading ? (
-          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
         ) : (
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"

@@ -316,12 +316,23 @@ cp .env.example .env.local
 npm run seed:profiles
 ```
 
-### Run Dev Server
+### Code Formatting
+
+This project uses Prettier with Tailwind CSS class sorting for consistent code formatting.
 
 ```bash
-npm run dev
-# opens at http://localhost:3000
+# Format all files
+pnpm format
+
+# Check if files are formatted correctly
+pnpm format:check
 ```
+
+Prettier is configured to:
+
+- Sort Tailwind CSS classes automatically
+- Use single quotes, semicolons, and 2-space indentation
+- Format files on save in VS Code (if Prettier extension is installed)
 
 ---
 

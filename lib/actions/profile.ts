@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { UserProfile } from "@/app/profile/page";
-import { createClient } from "@/lib/supabase/server";
+import { UserProfile } from '@/app/profile/page';
+import { createClient } from '@/lib/supabase/server';
 
 export async function getCurrentUserProfile() {
   const supabase = await createClient();
@@ -15,13 +15,13 @@ export async function getCurrentUserProfile() {
   }
 
   const { data: profile, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", user.id)
+    .from('users')
+    .select('*')
+    .eq('id', user.id)
     .single();
 
   if (error) {
-    console.error("Error fetching profile:", error);
+    console.error('Error fetching profile:', error);
     return null;
   }
 
@@ -36,11 +36,11 @@ export async function updateUserProfile(profileData: Partial<UserProfile>) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { success: false, error: "User not authenticated" };
+    return { success: false, error: 'User not authenticated' };
   }
 
   const { error } = await supabase
-    .from("users")
+    .from('users')
     .update({
       full_name: profileData.full_name,
       username: profileData.username,
@@ -50,10 +50,10 @@ export async function updateUserProfile(profileData: Partial<UserProfile>) {
       avatar_url: profileData.avatar_url,
       updated_at: new Date().toISOString(),
     })
-    .eq("id", user.id);
+    .eq('id', user.id);
 
   if (error) {
-    console.error("Error updating profile:", error);
+    console.error('Error updating profile:', error);
     return { success: false, error: error.message };
   }
 
@@ -68,18 +68,16 @@ export async function uploadProfilePhoto(file: File) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { success: false, error: "User not authenticated" };
+    return { success: false, error: 'User not authenticated' };
   }
 
-  const fileExt = file.name.split(".").pop();
+  const fileExt = file.name.split('.').pop();
   const fileName = `${user.id}-${Date.now()}.${fileExt}`;
 
-  const { error } = await supabase.storage
-    .from("profile-photos")
-    .upload(fileName, file, {
-      cacheControl: "3600",
-      upsert: false,
-    });
+  const { error } = await supabase.storage.from('profile-photos').upload(fileName, file, {
+    cacheControl: '3600',
+    upsert: false,
+  });
 
   if (error) {
     return { success: false, error: error.message };
@@ -87,7 +85,7 @@ export async function uploadProfilePhoto(file: File) {
 
   const {
     data: { publicUrl },
-  } = supabase.storage.from("profile-photos").getPublicUrl(fileName);
+  } = supabase.storage.from('profile-photos').getPublicUrl(fileName);
 
   return { success: true, url: publicUrl };
 }
