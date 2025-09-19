@@ -1,11 +1,11 @@
 'use client';
 
-import { UserProfile } from '@/app/profile/page';
 import { FullPageLoader } from '@/components';
 import MatchButtons from '@/components/MatchButtons';
 import MatchCard from '@/components/MatchCard';
 import MatchNotification from '@/components/MatchNotification';
-import { getPotentialMatches } from '@/lib/actions/matches';
+import { getPotentialMatches, likeUser } from '@/lib/actions/matches';
+import type { UserProfile } from '@/types';
 import { cn } from '@/utils/helpers';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -35,7 +35,24 @@ export default function MatchesPage() {
   }, []);
 
   async function handleLike() {
-    //
+    if (currentIndex < potentialMatches.length) {
+      const likedUser = potentialMatches[currentIndex];
+
+      if (!likedUser) return;
+
+      try {
+        const result = await likeUser(likedUser.id);
+
+        if (result.isMatch && result.matchedUser) {
+          setMatchedUser(result.matchedUser);
+          setShowMatchNotification(true);
+        }
+
+        setCurrentIndex((prev) => prev + 1);
+      } catch (error) {
+        console.error('Error liking user:', error);
+      }
+    }
   }
 
   async function handlePass() {
@@ -89,7 +106,13 @@ export default function MatchesPage() {
             Refresh
           </button>
         </div>
-        {showMatchNotification && matchedUser && <MatchNotification />}
+        {showMatchNotification && matchedUser && (
+          <MatchNotification
+            match={matchedUser}
+            onClose={handleCloseMatchNotification}
+            onStartChat={handleStartChat}
+          />
+        )}
       </div>
     );
   }
@@ -141,13 +164,19 @@ export default function MatchesPage() {
         </header>
 
         <div className={cn('mx-auto max-w-md')}>
-          <MatchCard user={currentPotentialMatch} />
+          {currentPotentialMatch && <MatchCard user={currentPotentialMatch} />}
           <div className={cn('mt-8')}>
             <MatchButtons onLike={handleLike} onDislike={handlePass} />
           </div>
         </div>
 
-        {showMatchNotification && matchedUser && <MatchNotification />}
+        {showMatchNotification && matchedUser && (
+          <MatchNotification
+            match={matchedUser}
+            onClose={handleCloseMatchNotification}
+            onStartChat={handleStartChat}
+          />
+        )}
       </div>
     </div>
   );

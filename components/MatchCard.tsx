@@ -1,5 +1,5 @@
-import type { UserProfile } from '@/app/profile/page';
 import { calculateAge } from '@/lib/helpers/calculate-age';
+import type { UserProfile } from '@/types';
 import { cn } from '@/utils/helpers';
 import Image from 'next/image';
 import { memo } from 'react';

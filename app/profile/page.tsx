@@ -3,28 +3,10 @@
 import { FullPageLoader } from '@/components';
 import { getCurrentUserProfile } from '@/lib/actions/profile';
 import { calculateAge } from '@/lib/helpers/calculate-age';
+import type { UserProfile } from '@/types';
 import { cn } from '@/utils/helpers';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-
-export interface UserProfile {
-  id: string;
-  full_name: string;
-  username: string;
-  email: string;
-  gender: 'male' | 'female' | 'other';
-  birthdate: string;
-  bio: string;
-  avatar_url: string;
-  preferences: UserPreferences;
-  location_lat?: number;
-  location_lng?: number;
-  last_active: boolean;
-  is_verified: boolean;
-  is_online: boolean;
-  created_at: string;
-  updated_at: string;
-}
 
 export interface UserPreferences {
   age_range: {

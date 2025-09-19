@@ -1,7 +1,7 @@
 'use server';
 
-import { UserProfile } from '@/app/profile/page';
 import { createClient } from '@/lib/supabase/server';
+import type { UserProfile } from '@/types';
 
 export async function getCurrentUserProfile() {
   const supabase = await createClient();
