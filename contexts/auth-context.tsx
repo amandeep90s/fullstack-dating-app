@@ -1,7 +1,7 @@
 'use client';
 
 import { createClient } from '@/lib/supabase/client';
-import { User } from '@supabase/supabase-js';
+import type { User } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -49,6 +49,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         console.error('Auth initialization error:', error);
         setError(errorMessage);
         setUser(null);
+        // Return a no-op unsubscribe function to satisfy return type
+        return () => {};
       } finally {
         setLoading(false);
       }

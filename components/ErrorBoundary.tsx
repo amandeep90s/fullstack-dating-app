@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/utils/helpers';
-import React, { ErrorInfo, ReactNode } from 'react';
+import React, { type ErrorInfo, type ReactNode } from 'react';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -23,14 +23,14 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Error Boundary caught an error:', error, errorInfo);
 
     // Here you could send error to monitoring service like Sentry
     // trackError(error, errorInfo);
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       if (this.props.fallback) {
         return this.props.fallback;

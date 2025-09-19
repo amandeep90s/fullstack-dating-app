@@ -1,7 +1,7 @@
 // Environment variable validation
 export const config = {
-  supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-  supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  supabaseUrl: process.env['NEXT_PUBLIC_SUPABASE_URL']!,
+  supabaseAnonKey: process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY']!,
 } as const;
 
 // Validate required environment variables
