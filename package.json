@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
-    "build:analyze": "ANALYZE=true next build --turbopack",
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write .",
@@ -26,17 +25,15 @@
     "@eslint/eslintrc": "^3.3.1",
     "@faker-js/faker": "^10.0.0",
     "@tailwindcss/postcss": "^4.1.13",
-    "@types/node": "^24.5.0",
+    "@types/node": "^24.5.2",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
-    "@types/webpack-bundle-analyzer": "^4.7.0",
     "dotenv": "^17.2.2",
-    "eslint": "^9.35.0",
+    "eslint": "^9.36.0",
     "eslint-config-next": "15.5.3",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^4.1.13",
-    "typescript": "^5.9.2",
-    "webpack-bundle-analyzer": "^4.10.2"
+    "typescript": "^5.9.2"
   }
 }
