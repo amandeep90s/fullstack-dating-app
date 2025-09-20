@@ -1,6 +1,7 @@
 'use client';
 
 import { FullPageLoader } from '@/components';
+import AlreadyLikedNotification from '@/components/AlreadyLikedNotification';
 import MatchButtons from '@/components/MatchButtons';
 import MatchCard from '@/components/MatchCard';
 import MatchNotification from '@/components/MatchNotification';
@@ -16,6 +17,7 @@ export default function MatchesPage() {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showMatchNotification, setShowMatchNotification] = useState<boolean>(false);
   const [matchedUser, setMatchedUser] = useState<UserProfile | null>(null);
+  const [showAlreadyLikedNotification, setShowAlreadyLikedNotification] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -43,6 +45,12 @@ export default function MatchesPage() {
       try {
         const result = await likeUser(likedUser.id);
 
+        if (result.alreadyLiked) {
+          // Show already liked notification
+          setShowAlreadyLikedNotification(true);
+          return;
+        }
+
         if (result.isMatch && result.matchedUser) {
           setMatchedUser(result.matchedUser);
           setShowMatchNotification(true);
@@ -62,7 +70,11 @@ export default function MatchesPage() {
   }
 
   function handleCloseMatchNotification() {
-    //
+    setShowMatchNotification(false);
+  }
+
+  function handleCloseAlreadyLikedNotification() {
+    setShowAlreadyLikedNotification(false);
   }
 
   function handleStartChat() {
@@ -112,6 +124,10 @@ export default function MatchesPage() {
             onClose={handleCloseMatchNotification}
             onStartChat={handleStartChat}
           />
+        )}
+
+        {showAlreadyLikedNotification && (
+          <AlreadyLikedNotification onClose={handleCloseAlreadyLikedNotification} />
         )}
       </div>
     );
@@ -176,6 +192,10 @@ export default function MatchesPage() {
             onClose={handleCloseMatchNotification}
             onStartChat={handleStartChat}
           />
+        )}
+
+        {showAlreadyLikedNotification && (
+          <AlreadyLikedNotification onClose={handleCloseAlreadyLikedNotification} />
         )}
       </div>
     </div>

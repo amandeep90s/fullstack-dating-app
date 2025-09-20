@@ -232,7 +232,7 @@ export default function AuthPage() {
             type="submit"
             disabled={loading}
             className={cn(
-              'flex w-full justify-center rounded-md border border-transparent px-4 py-2 shadow-sm',
+              'flex w-full items-center justify-center rounded-md border border-transparent px-4 py-2 shadow-sm',
               'min-h-[44px] cursor-pointer bg-gradient-to-r from-pink-500 to-red-500 text-sm font-medium text-white',
               'hover:from-pink-600 hover:to-red-600 focus:ring-2 focus:ring-offset-2 focus:outline-none',
               'transition-colors focus:ring-pink-500 disabled:cursor-not-allowed disabled:opacity-50'

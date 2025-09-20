@@ -1,22 +1,21 @@
-import type { UserProfile } from '@/types';
 import { cn } from '@/utils/helpers';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-interface MatchNotificationProps {
-  match: UserProfile;
+interface AlreadyLikedNotificationProps {
   onClose: () => void;
-  onStartChat: () => void;
 }
 
-export default function MatchNotification({ match, onClose, onStartChat }: MatchNotificationProps) {
+export default function AlreadyLikedNotification({ onClose }: AlreadyLikedNotificationProps) {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   useEffect(() => {
+    // Show the notification immediately
+    setIsVisible(true);
+
+    // Auto-hide after 3 seconds
     const timer = setTimeout(() => {
-      setIsVisible(true);
-      setTimeout(onClose, 5000);
-    }, 5000);
+      handleClose();
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [onClose]);
@@ -24,11 +23,6 @@ export default function MatchNotification({ match, onClose, onStartChat }: Match
   function handleClose() {
     setIsVisible(false);
     setTimeout(onClose, 300); // Match the duration of the fade-out transition
-  }
-
-  function handleStartChat() {
-    onStartChat();
-    handleClose();
   }
 
   return (
@@ -44,21 +38,18 @@ export default function MatchNotification({ match, onClose, onStartChat }: Match
         )}
       >
         <div className={cn('flex items-start space-x-4')}>
-          <div className={cn('relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-full')}>
-            <Image
-              src={match.avatar_url}
-              alt={match.full_name}
-              className={cn('h-full w-full object-cover')}
-              height={64}
-              width={64}
-              priority
-            />
+          <div
+            className={cn(
+              'flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-900/30'
+            )}
+          >
+            <span className="text-3xl">💛</span>
           </div>
 
           <div className={cn('min-w-0 flex-1')}>
             <div className={cn('mb-2 flex items-center justify-between')}>
               <h3 className={cn('text-lg font-semibold text-gray-900 dark:text-white')}>
-                It&apos;s a Match! 🎉
+                Already Liked!
               </h3>
               <button
                 className={cn('text-gray-400 hover:text-gray-600 dark:hover:text-gray-300')}
@@ -76,27 +67,18 @@ export default function MatchNotification({ match, onClose, onStartChat }: Match
               </button>
             </div>
             <p className={cn('mb-3 text-sm text-gray-600 dark:text-gray-400')}>
-              You and <span className={cn('font-semibold')}>{match.full_name}</span> liked each
-              other!
+              You have already liked this user. If they like you back, you&apos;ll get a match!
             </p>
 
-            <div className={cn('flex space-x-2')}>
+            <div className={cn('flex justify-end')}>
               <button
                 className={cn(
-                  'flex-1 rounded-full bg-gradient-to-r from-pink-500 to-red-500 px-4 py-2 text-sm font-semibold text-white',
-                  'transition-all duration-200 hover:from-pink-600 hover:to-red-600'
+                  'rounded-full bg-yellow-500 px-4 py-2 text-sm font-semibold text-white transition-all',
+                  'duration-200 hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700'
                 )}
-                onClick={handleStartChat}
+                onClick={handleClose}
               >
-                Start Chat
-              </button>
-              <button
-                className={cn(
-                  'flex-1 rounded-full bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition-all',
-                  'duration-200 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-                )}
-              >
-                Later
+                Got it
               </button>
             </div>
           </div>

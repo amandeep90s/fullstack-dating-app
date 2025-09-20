@@ -79,6 +79,8 @@ export interface MatchResult {
   success: boolean;
   isMatch: boolean;
   matchedUser?: UserProfile;
+  alreadyLiked?: boolean;
+  message?: string;
   error?: string;
 }
 

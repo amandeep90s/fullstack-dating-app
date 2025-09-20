@@ -1,7 +1,7 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import type { UserProfile } from '@/types';
+import type { MatchResult, UserProfile } from '@/types';
 
 export async function getPotentialMatches(): Promise<UserProfile[]> {
   const supabase = await createClient();
@@ -64,7 +64,7 @@ export async function getPotentialMatches(): Promise<UserProfile[]> {
   return filteredMatches;
 }
 
-export async function likeUser(toUserId: string) {
+export async function likeUser(toUserId: string): Promise<MatchResult> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -74,6 +74,29 @@ export async function likeUser(toUserId: string) {
     throw new Error('Not authenticated.');
   }
 
+  // Check if user has already liked this person
+  const { data: existingUserLike, error: checkUserLikeError } = await supabase
+    .from('likes')
+    .select('*')
+    .eq('from_user_id', user.id)
+    .eq('to_user_id', toUserId)
+    .single();
+
+  if (checkUserLikeError && checkUserLikeError.code !== 'PGRST116') {
+    throw new Error('Failed to check existing like');
+  }
+
+  // If user has already liked this person, return appropriate response
+  if (existingUserLike) {
+    return {
+      success: true,
+      isMatch: false,
+      alreadyLiked: true,
+      message: 'You have already liked this user',
+    };
+  }
+
+  // Insert the new like
   const { error: likeError } = await supabase.from('likes').insert({
     from_user_id: user.id,
     to_user_id: toUserId,
