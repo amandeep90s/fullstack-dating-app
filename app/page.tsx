@@ -13,7 +13,7 @@ export default function Home() {
     <div
       className={cn(
         'grid grid-rows-[20px_1fr_20px] items-center justify-items-center font-sans',
-        'min-h-screen gap-16 p-8 pb-20 sm:p-20'
+        'min-h-full gap-16 p-8 pb-20 sm:p-20'
       )}
     >
       <main className={cn('row-start-2 flex flex-col items-center gap-[32px] sm:items-start')}>

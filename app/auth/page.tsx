@@ -108,7 +108,7 @@ export default function AuthPage() {
   return (
     <div
       className={cn(
-        'flex min-h-screen items-center justify-center bg-gradient-to-br from-pink-100 to-red-100',
+        'flex min-h-full items-center justify-center bg-gradient-to-br from-pink-100 to-red-100',
         'dark:from-gray-900 dark:to-gray-800'
       )}
     >

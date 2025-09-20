@@ -35,8 +35,10 @@ export default function RootLayout({
       <body className={cn(plexSans.variable, plexMono.variable, 'h-full antialiased')}>
         <ErrorBoundary>
           <AuthProvider>
-            <Navbar />
-            <div className={cn('flex h-full flex-col')}>{children}</div>
+            <div className={cn('flex h-full flex-col')}>
+              <Navbar />
+              <main className={cn('flex-1 overflow-auto')}>{children}</main>
+            </div>
           </AuthProvider>
         </ErrorBoundary>
       </body>
