@@ -1,6 +1,5 @@
-import { calculateAge } from '@/lib/helpers/calculate-age';
+import { calculateAge, cn } from '@/lib/helpers/helpers';
 import type { UserProfile } from '@/types';
-import { cn } from '@/utils/helpers';
 import Image from 'next/image';
 import { memo } from 'react';
 

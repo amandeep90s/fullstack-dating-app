@@ -1,10 +1,9 @@
 'use client';
 
-import { FullPageLoader } from '@/components';
+import { FullPageLoader, withAuth } from '@/components';
 import { getCurrentUserProfile } from '@/lib/actions/profile';
-import { calculateAge } from '@/lib/helpers/calculate-age';
+import { calculateAge, cn } from '@/lib/helpers/helpers';
 import type { UserProfile } from '@/types';
-import { cn } from '@/utils/helpers';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -18,7 +17,7 @@ export interface UserPreferences {
   gender_preferences: ('male' | 'female' | 'other')[];
 }
 
-export default function ProfilePage() {
+function ProfilePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -295,3 +294,7 @@ export default function ProfilePage() {
     </div>
   );
 }
+
+export default withAuth(ProfilePage, {
+  loadingText: 'Loading your profile...',
+});

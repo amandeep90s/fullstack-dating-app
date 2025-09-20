@@ -1,4 +1,4 @@
-import { cn } from '@/utils/helpers';
+import { cn } from '@/lib/helpers/helpers';
 import { memo, useCallback } from 'react';
 import { HeartIcon, XMarkIcon } from './icons';
 

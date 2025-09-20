@@ -1,6 +1,6 @@
 import { ErrorBoundary, Navbar } from '@/components';
 import { AuthProvider } from '@/contexts/auth-context';
-import { cn } from '@/utils/helpers';
+import { cn } from '@/lib/helpers/helpers';
 import type { Metadata } from 'next';
 import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 import './globals.css';

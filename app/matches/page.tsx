@@ -1,17 +1,17 @@
 'use client';
 
-import { FullPageLoader } from '@/components';
+import { FullPageLoader, withAuth } from '@/components';
 import AlreadyLikedNotification from '@/components/AlreadyLikedNotification';
 import MatchButtons from '@/components/MatchButtons';
 import MatchCard from '@/components/MatchCard';
 import MatchNotification from '@/components/MatchNotification';
 import { getPotentialMatches, likeUser } from '@/lib/actions/matches';
+import { cn } from '@/lib/helpers/helpers';
 import type { UserProfile } from '@/types';
-import { cn } from '@/utils/helpers';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function MatchesPage() {
+function MatchesPage() {
   const [potentialMatches, setPotentialMatches] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -201,3 +201,7 @@ export default function MatchesPage() {
     </div>
   );
 }
+
+export default withAuth(MatchesPage, {
+  loadingText: 'Finding your matches...',
+});

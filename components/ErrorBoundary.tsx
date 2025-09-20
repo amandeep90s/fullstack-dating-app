@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/utils/helpers';
+import { cn } from '@/lib/helpers/helpers';
 import React, { type ErrorInfo, type ReactNode } from 'react';
 
 interface ErrorBoundaryState {

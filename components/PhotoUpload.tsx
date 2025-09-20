@@ -1,7 +1,7 @@
 'use client';
 
 import { uploadProfilePhoto } from '@/lib/actions/profile';
-import { cn } from '@/utils/helpers';
+import { cn } from '@/lib/helpers/helpers';
 import React, { useRef, useState } from 'react';
 
 type PhotoUploadProps = {

@@ -1,4 +1,4 @@
-import { cn } from '@/utils/helpers';
+import { cn } from '@/lib/helpers/helpers';
 import { useEffect, useState } from 'react';
 
 interface AlreadyLikedNotificationProps {

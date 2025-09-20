@@ -93,3 +93,12 @@ export interface AuthContextValue {
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
+
+// Chat Data
+export interface ChatData {
+  id: string;
+  user: UserProfile;
+  lastMessage?: string;
+  lastMessageTime: string;
+  unreadCount: number;
+}

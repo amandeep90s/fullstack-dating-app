@@ -1,13 +1,13 @@
 'use client';
 
-import { FullPageLoader, PhotoUpload } from '@/components';
+import { FullPageLoader, PhotoUpload, withAuth } from '@/components';
 import { getCurrentUserProfile, updateUserProfile } from '@/lib/actions/profile';
-import { cn } from '@/utils/helpers';
+import { cn } from '@/lib/helpers/helpers';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function EditProfilePage() {
+function EditProfilePage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -296,3 +296,7 @@ export default function EditProfilePage() {
     </div>
   );
 }
+
+export default withAuth(EditProfilePage, {
+  loadingText: 'Loading profile...',
+});

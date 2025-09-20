@@ -2,8 +2,8 @@
 
 import { FullPageLoader } from '@/components';
 import { useAuth } from '@/contexts/auth-context';
+import { cn } from '@/lib/helpers/helpers';
 import { createClient } from '@/lib/supabase/client';
-import { cn } from '@/utils/helpers';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -25,7 +25,10 @@ export default function AuthPage() {
 
   useEffect(() => {
     if (user && !authLoading) {
-      router.push('/');
+      // Check if there's a redirectTo parameter to send user back to original page
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectTo = urlParams.get('redirectTo');
+      router.push(redirectTo || '/');
     }
   }, [user, authLoading, router]);
 

@@ -1,4 +1,4 @@
-import { cn } from '@/utils/helpers';
+import { cn } from '@/lib/helpers/helpers';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 

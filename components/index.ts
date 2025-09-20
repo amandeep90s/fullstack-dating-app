@@ -2,3 +2,4 @@ export * from './ErrorBoundary';
 export * from './FullPageLoader';
 export * from './Navbar';
 export * from './PhotoUpload';
+export * from './withAuth';

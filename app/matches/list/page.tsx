@@ -1,15 +1,14 @@
 'use client';
 
-import { FullPageLoader } from '@/components';
+import { FullPageLoader, withAuth } from '@/components';
 import { getUserMatches } from '@/lib/actions/matches';
-import { calculateAge } from '@/lib/helpers/calculate-age';
+import { calculateAge, cn } from '@/lib/helpers/helpers';
 import type { UserProfile } from '@/types';
-import { cn } from '@/utils/helpers';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-export default function MatchesListPage() {
+function MatchesListPage() {
   const [matches, setMatches] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -124,3 +123,7 @@ export default function MatchesListPage() {
     </div>
   );
 }
+
+export default withAuth(MatchesListPage, {
+  loadingText: 'Loading your matches...',
+});

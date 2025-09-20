@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/contexts/auth-context';
-import { cn } from '@/utils/helpers';
+import { cn } from '@/lib/helpers/helpers';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { memo, useCallback, useState } from 'react';
