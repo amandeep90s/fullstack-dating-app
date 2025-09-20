@@ -3,6 +3,7 @@
 import { FullPageLoader, PhotoUpload } from '@/components';
 import { getCurrentUserProfile, updateUserProfile } from '@/lib/actions/profile';
 import { cn } from '@/utils/helpers';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -35,7 +36,7 @@ export default function EditProfilePage() {
             avatar_url: profileData.avatar_url || '',
           });
         }
-      } catch (err) {
+      } catch {
         setError('Failed to load profile');
       } finally {
         setLoading(false);
@@ -57,7 +58,7 @@ export default function EditProfilePage() {
       } else {
         setError(result.error ?? 'Failed to update profile');
       }
-    } catch (error) {
+    } catch {
       setError('Failed to update profile');
     } finally {
       setSaving(false);
@@ -105,10 +106,13 @@ export default function EditProfilePage() {
               <div className={cn('flex items-center space-x-6')}>
                 <div className={cn('relative')}>
                   <div className={cn('h-24 w-24 overflow-hidden rounded-full')}>
-                    <img
+                    <Image
                       src={formData.avatar_url || '/default-avatar.png'}
                       alt="Profile"
                       className="h-full w-full object-cover"
+                      height={96}
+                      width={96}
+                      priority
                     />
                   </div>
                   <PhotoUpload

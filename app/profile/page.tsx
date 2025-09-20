@@ -5,6 +5,7 @@ import { getCurrentUserProfile } from '@/lib/actions/profile';
 import { calculateAge } from '@/lib/helpers/calculate-age';
 import type { UserProfile } from '@/types';
 import { cn } from '@/utils/helpers';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -107,10 +108,13 @@ export default function ProfilePage() {
                 <div className={cn('mb-8 flex items-center space-x-6')}>
                   <div className={cn('relative')}>
                     <div className={cn('h-24 w-24 overflow-hidden rounded-full')}>
-                      <img
+                      <Image
                         src={profile.avatar_url || '/default-avatar.png'}
                         alt={profile.full_name}
                         className={cn('h-full w-full object-cover')}
+                        height={96}
+                        width={96}
+                        priority
                       />
                     </div>
                   </div>

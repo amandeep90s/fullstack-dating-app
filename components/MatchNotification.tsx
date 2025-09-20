@@ -1,5 +1,6 @@
 import type { UserProfile } from '@/types';
 import { cn } from '@/utils/helpers';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 interface MatchNotificationProps {
@@ -44,10 +45,13 @@ export default function MatchNotification({ match, onClose, onStartChat }: Match
       >
         <div className={cn('flex items-start space-x-4')}>
           <div className={cn('relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-full')}>
-            <img
+            <Image
               src={match.avatar_url}
               alt={match.full_name}
               className={cn('h-full w-full object-cover')}
+              height={64}
+              width={64}
+              priority
             />
           </div>
 

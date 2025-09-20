@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next';
 import path from 'path';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const nextConfig: NextConfig = {
   turbopack: {
@@ -75,13 +76,13 @@ const nextConfig: NextConfig = {
   // Bundle analyzer (only in development when ANALYZE=true)
   ...(process.env['ANALYZE'] === 'true' && {
     webpack: (config) => {
-      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
       config.plugins.push(
         new BundleAnalyzerPlugin({
           analyzerMode: 'server',
           openAnalyzer: true,
         })
       );
+      return config;
       return config;
     },
   }),

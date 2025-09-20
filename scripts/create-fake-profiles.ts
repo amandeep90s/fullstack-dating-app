@@ -1,3 +1,4 @@
+import type { UserProfile } from '@/types';
 import { faker } from '@faker-js/faker';
 import { createClient } from '@supabase/supabase-js';
 import { config } from 'dotenv';
@@ -5,15 +6,21 @@ import { config } from 'dotenv';
 config({ path: '.env.local' });
 
 // Configuration
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || `your_supabase_url`;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || `your_service_role_key`;
+const SUPABASE_URL = process.env['NEXT_PUBLIC_SUPABASE_URL'] || `your_supabase_url`;
+const SUPABASE_SERVICE_ROLE_KEY =
+  process.env['SUPABASE_SERVICE_ROLE_KEY'] || `your_service_role_key`;
 const PASSWORD = 'password';
 
 // Initialize Supabase client with service role key
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
+type FakeUserProfile = Omit<
+  UserProfile,
+  'id' | 'last_active' | 'is_verified' | 'is_online' | 'created_at' | 'updated_at'
+>;
+
 // Fake profile data
-const fakeProfiles = [
+const fakeProfiles: FakeUserProfile[] = [
   {
     full_name: 'Sarah Johnson',
     username: 'sarah_j',
@@ -171,6 +178,10 @@ async function createFakeProfiles() {
 
   for (let i = 0; i < fakeProfiles.length; i++) {
     const profile = fakeProfiles[i];
+
+    if (!profile) {
+      continue;
+    }
 
     try {
       console.log(`\n📝 Creating profile ${i + 1}/10: ${profile.full_name}`);
