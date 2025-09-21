@@ -305,9 +305,7 @@ export default function StreamChatInterface({ otherUser, ref }: StreamChatInterf
     <div className={cn('flex h-full flex-col bg-white dark:bg-gray-900')}>
       <div
         ref={messagesContainerRef}
-        className={cn(
-          'chat-scrollbar relative min-h-[calc(100vh-14rem)] flex-1 space-y-4 overflow-y-auto scroll-smooth p-4'
-        )}
+        className={cn('chat-scrollbar relative flex-1 space-y-4 overflow-y-auto scroll-smooth p-4')}
         style={{ scrollBehavior: 'smooth' }}
       >
         {messages.map((message, key) => (

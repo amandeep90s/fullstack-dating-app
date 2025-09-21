@@ -89,7 +89,7 @@ function ChatConversationPage() {
   return (
     <div
       className={cn(
-        'min-h-full bg-gradient-to-br from-pink-50 to-red-50 dark:from-gray-900 dark:to-gray-800'
+        'h-full bg-gradient-to-br from-pink-50 to-red-50 dark:from-gray-900 dark:to-gray-800'
       )}
     >
       <div className={cn('mx-auto flex h-full max-w-4xl flex-col')}>
