@@ -1,16 +1,18 @@
 'use client';
 
 import { createClient } from '@/lib/supabase/client';
-import type { User } from '@supabase/supabase-js';
+import { handleError } from '@/lib/utils/errors';
+import type { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   error: string | null;
   signOut: () => Promise<void>;
+  clearError: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,61 +21,86 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const supabase = createClient();
   const router = useRouter();
 
+  // Memoize the client to avoid recreating it
+  const supabase = useMemo(() => createClient(), []);
+
+  const clearError = useCallback(() => {
+    setError(null);
+  }, []);
+
   useEffect(() => {
-    async function checkUser() {
+    let mounted = true;
+
+    async function initializeAuth() {
       try {
         const {
           data: { session },
         } = await supabase.auth.getSession();
 
-        setUser(session?.user ?? null);
-        setError(null);
-
-        const {
-          data: { subscription },
-        } = supabase.auth.onAuthStateChange(async (event, session) => {
+        if (mounted) {
           setUser(session?.user ?? null);
-          if (event === 'SIGNED_OUT') {
-            setError(null);
-          }
-        });
-        return () => {
-          subscription.unsubscribe();
-        };
-      } catch (error: unknown) {
-        const errorMessage =
-          error instanceof Error ? error.message : 'Failed to initialize authentication';
-        console.error('Auth initialization error:', error);
-        setError(errorMessage);
-        setUser(null);
-        // Return a no-op unsubscribe function to satisfy return type
-        return () => {};
+          setError(null);
+        }
+      } catch (error) {
+        const handledError = handleError(error);
+        console.error('Auth initialization error:', handledError);
+        if (mounted) {
+          setError(handledError.message);
+          setUser(null);
+        }
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     }
 
-    checkUser();
-  }, []);
+    // Set up auth state listener
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session: Session | null) => {
+      if (mounted) {
+        setUser(session?.user ?? null);
+        if (event === 'SIGNED_OUT') {
+          setError(null);
+        }
+      }
+    });
 
-  async function signOut() {
+    initializeAuth();
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, [supabase]);
+
+  const signOut = useCallback(async () => {
     try {
+      setError(null);
       await supabase.auth.signOut();
-
       router.push('/auth');
     } catch (error) {
-      console.error('Error signing out:', error);
+      const handledError = handleError(error);
+      console.error('Error signing out:', handledError);
+      setError(handledError.message);
     }
-  }
+  }, [supabase, router]);
 
-  return (
-    <AuthContext.Provider value={{ user, loading, error, signOut }}>
-      {children}
-    </AuthContext.Provider>
+  const contextValue = useMemo(
+    () => ({
+      user,
+      loading,
+      error,
+      signOut,
+      clearError,
+    }),
+    [user, loading, error, signOut, clearError]
   );
+
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

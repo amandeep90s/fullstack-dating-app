@@ -1,9 +1,9 @@
 'use client';
 
-import { FullPageLoader } from '@/components';
+import { Button, FullPageLoader } from '@/components';
 import { useAuth } from '@/contexts/auth-context';
+import { BACKGROUND_STYLES, LAYOUT_STYLES, TEXT_STYLES } from '@/lib/constants/styles';
 import { cn } from '@/lib/helpers/helpers';
-import Link from 'next/link';
 
 export default function Home() {
   const { user, loading } = useAuth();
@@ -13,18 +13,12 @@ export default function Home() {
   }
 
   return (
-    <div
-      className={cn(
-        'flex min-h-full items-center justify-center bg-gradient-to-br from-slate-50',
-        'to-pink-50 dark:from-slate-900 dark:to-slate-800'
-      )}
-    >
-      {/* Hero Section - Full Page */}
-      <section className={cn('relative w-full overflow-hidden')}>
-        <div className={cn('absolute inset-0')}></div>
-        <div className={cn('relative container mx-auto px-6 py-20 lg:py-32')}>
-          <div className={cn('mx-auto max-w-4xl text-center')}>
-            <h1 className={cn('mb-6 text-5xl font-bold text-gray-900 lg:text-7xl dark:text-white')}>
+    <div className={cn(BACKGROUND_STYLES.slateGradient, BACKGROUND_STYLES.fullHeight)}>
+      <section className="relative w-full overflow-hidden">
+        <div className="absolute inset-0"></div>
+        <div className={cn('relative', LAYOUT_STYLES.container, 'py-20 lg:py-32')}>
+          <div className="mx-auto max-w-4xl text-center">
+            <h1 className={cn('mb-6 text-5xl font-bold lg:text-7xl', TEXT_STYLES.heading)}>
               Find Your Perfect
               <span
                 className={cn(
@@ -34,26 +28,18 @@ export default function Home() {
                 StreamMatch
               </span>
             </h1>
-            <p
-              className={cn(
-                'mb-8 text-xl leading-relaxed text-gray-600 lg:text-2xl dark:text-gray-300'
-              )}
-            >
+
+            <p className={cn('mb-8 text-xl leading-relaxed lg:text-2xl', TEXT_STYLES.subheading)}>
               Connect with like-minded people through live streaming, meaningful conversations, and
               authentic connections.
             </p>
 
             {user ? (
-              <div className={cn('flex flex-col justify-center gap-4 sm:flex-row')}>
-                <Link
-                  href="/matches"
-                  className={cn(
-                    'inline-flex transform items-center rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:from-pink-600 hover:to-purple-700 hover:shadow-xl'
-                  )}
-                >
+              <div className="flex flex-col justify-center gap-4 sm:flex-row">
+                <Button href="/matches" variant="large">
                   Start Discovering
                   <svg
-                    className={cn('ml-2 h-5 w-5')}
+                    className="ml-2 h-5 w-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -65,27 +51,17 @@ export default function Home() {
                       d="M13 7l5 5m0 0l-5 5m5-5H6"
                     />
                   </svg>
-                </Link>
-                <Link
-                  href="/profile"
-                  className={cn(
-                    'inline-flex items-center rounded-full border-2 border-pink-500 px-8 py-4 text-lg font-semibold text-pink-500 transition-all duration-300 hover:bg-pink-500 hover:text-white dark:text-pink-400'
-                  )}
-                >
+                </Button>
+                <Button href="/profile" variant="secondary" size="lg">
                   View Profile
-                </Link>
+                </Button>
               </div>
             ) : (
-              <div className={cn('flex flex-col justify-center gap-4 sm:flex-row')}>
-                <Link
-                  href="/auth"
-                  className={cn(
-                    'inline-flex transform items-center rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:from-pink-600 hover:to-purple-700 hover:shadow-xl'
-                  )}
-                >
+              <div className="flex flex-col justify-center gap-4 sm:flex-row">
+                <Button href="/auth" variant="large">
                   Get Started
                   <svg
-                    className={cn('ml-2 h-5 w-5')}
+                    className="ml-2 h-5 w-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -97,15 +73,10 @@ export default function Home() {
                       d="M13 7l5 5m0 0l-5 5m5-5H6"
                     />
                   </svg>
-                </Link>
-                <Link
-                  href="/matches"
-                  className={cn(
-                    'inline-flex items-center rounded-full border-2 border-pink-500 px-8 py-4 text-lg font-semibold text-pink-500 transition-all duration-300 hover:bg-pink-500 hover:text-white dark:text-pink-400'
-                  )}
-                >
+                </Button>
+                <Button href="/matches" variant="secondary" size="lg">
                   Explore
-                </Link>
+                </Button>
               </div>
             )}
           </div>

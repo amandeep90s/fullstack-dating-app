@@ -1,33 +1,48 @@
 'use client';
 
 import { FullPageLoader, PhotoUpload, withAuth } from '@/components';
+import { FormInput } from '@/components/ui/FormInput';
 import { getCurrentUserProfile, updateUserProfile } from '@/lib/actions/profile';
 import { cn } from '@/lib/helpers/helpers';
+import { profileEditSchema, type ProfileEditFormData } from '@/lib/schemas/profile';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 function EditProfilePage() {
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const [formData, setFormData] = useState({
-    full_name: '',
-    username: '',
-    bio: '',
-    gender: 'male' as 'male' | 'female' | 'other',
-    birthdate: '',
-    avatar_url: '',
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setValue,
+    watch,
+    reset,
+  } = useForm<ProfileEditFormData>({
+    resolver: zodResolver(profileEditSchema),
+    defaultValues: {
+      full_name: '',
+      username: '',
+      bio: '',
+      gender: 'male' as const,
+      birthdate: '',
+      avatar_url: '',
+    },
   });
+
+  const watchedAvatarUrl = watch('avatar_url');
 
   useEffect(() => {
     async function loadProfile() {
       try {
         const profileData = await getCurrentUserProfile();
         if (profileData) {
-          setFormData({
+          reset({
             full_name: profileData.full_name || '',
             username: profileData.username || '',
             bio: profileData.bio || '',
@@ -44,15 +59,13 @@ function EditProfilePage() {
     }
 
     loadProfile();
-  }, []);
+  }, [reset]);
 
-  async function handleFormSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    setSaving(true);
+  async function onSubmit(data: ProfileEditFormData) {
     setError(null);
 
     try {
-      const result = await updateUserProfile(formData);
+      const result = await updateUserProfile(data);
       if (result.success) {
         router.push('/profile');
       } else {
@@ -60,16 +73,7 @@ function EditProfilePage() {
       }
     } catch {
       setError('Failed to update profile');
-    } finally {
-      setSaving(false);
     }
-  }
-
-  function handleInputChange(
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
   }
 
   if (loading) {
@@ -94,7 +98,7 @@ function EditProfilePage() {
         <div className={cn('mx-auto max-w-2xl')}>
           <form
             className={cn('rounded-2xl bg-white p-8 shadow-lg dark:bg-gray-800')}
-            onSubmit={handleFormSubmit}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <div className={cn('mb-8')}>
               <label
@@ -107,7 +111,7 @@ function EditProfilePage() {
                 <div className={cn('relative')}>
                   <div className={cn('h-24 w-24 overflow-hidden rounded-full')}>
                     <Image
-                      src={formData.avatar_url || '/default-avatar.png'}
+                      src={watchedAvatarUrl || '/default-avatar.png'}
                       alt="Profile"
                       className={cn('h-full w-full object-cover')}
                       height={96}
@@ -117,7 +121,7 @@ function EditProfilePage() {
                   </div>
                   <PhotoUpload
                     onPhotoUploaded={(url) => {
-                      setFormData((prev) => ({ ...prev, avatar_url: url }));
+                      setValue('avatar_url', url);
                     }}
                   />
                 </div>
@@ -142,18 +146,12 @@ function EditProfilePage() {
                 >
                   Full Name <span className={cn('text-red-600 dark:text-red-400')}>*</span>
                 </label>
-                <input
+                <FormInput
                   type="text"
                   id="full_name"
-                  name="full_name"
-                  value={formData.full_name}
-                  onChange={handleInputChange}
-                  required
                   placeholder="Enter your full name"
-                  className={cn(
-                    'w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none dark:border-gray-600',
-                    'focus:border-transparent focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white'
-                  )}
+                  error={errors.full_name}
+                  {...register('full_name')}
                 />
               </div>
 
@@ -165,17 +163,12 @@ function EditProfilePage() {
                 >
                   Username <span className={cn('text-red-600 dark:text-red-400')}>*</span>
                 </label>
-                <input
+                <FormInput
                   type="text"
                   id="username"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleInputChange}
-                  required
-                  className={cn(
-                    'w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-pink-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white'
-                  )}
                   placeholder="Choose a username"
+                  error={errors.username}
+                  {...register('username')}
                 />
               </div>
             </div>
@@ -191,19 +184,21 @@ function EditProfilePage() {
                 </label>
                 <select
                   id="gender"
-                  name="gender"
-                  value={formData.gender}
-                  onChange={handleInputChange}
-                  required
                   className={cn(
                     'w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none dark:border-gray-600',
                     'focus:border-transparent focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white'
                   )}
+                  {...register('gender')}
                 >
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                   <option value="other">Other</option>
                 </select>
+                {errors.gender && (
+                  <p className={cn('mt-1 text-sm text-red-600 dark:text-red-400')}>
+                    {errors.gender.message}
+                  </p>
+                )}
               </div>
 
               {/* Birthdate field */}
@@ -214,17 +209,11 @@ function EditProfilePage() {
                 >
                   Birthday <span className={cn('text-red-600 dark:text-red-400')}>*</span>
                 </label>
-                <input
+                <FormInput
                   type="date"
                   id="birthdate"
-                  name="birthdate"
-                  value={formData.birthdate}
-                  onChange={handleInputChange}
-                  required
-                  className={cn(
-                    'w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none dark:border-gray-600',
-                    'focus:border-transparent focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white'
-                  )}
+                  error={errors.birthdate}
+                  {...register('birthdate')}
                 />
               </div>
             </div>
@@ -235,25 +224,30 @@ function EditProfilePage() {
                 htmlFor="bio"
                 className={cn('mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300')}
               >
-                About Me <span className={cn('text-red-600 dark:text-red-400')}>*</span>
+                About Me
               </label>
               <textarea
                 id="bio"
-                name="bio"
-                value={formData.bio}
-                onChange={handleInputChange}
-                required
                 rows={4}
                 maxLength={500}
                 className={cn(
                   'w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none dark:border-gray-600',
-                  'resize-none focus:border-transparent focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white'
+                  'resize-none focus:border-transparent focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white',
+                  errors.bio && 'border-red-500 focus:ring-red-500'
                 )}
                 placeholder="Tell others about yourself..."
+                {...register('bio')}
               />
-              <p className={cn('mt-1 text-xs text-gray-500 dark:text-gray-400')}>
-                {formData.bio.length}/500 characters
-              </p>
+              <div className={cn('mt-1 flex justify-between')}>
+                {errors.bio && (
+                  <p className={cn('text-sm text-red-600 dark:text-red-400')}>
+                    {errors.bio.message}
+                  </p>
+                )}
+                <p className={cn('ml-auto text-xs text-gray-500 dark:text-gray-400')}>
+                  {watch('bio')?.length || 0}/500 characters
+                </p>
+              </div>
             </div>
 
             {error && (
@@ -281,7 +275,7 @@ function EditProfilePage() {
               </button>
               <button
                 type="submit"
-                disabled={saving}
+                disabled={isSubmitting}
                 className={cn(
                   'bg-gradient-to-r from-pink-500 to-red-500 px-6 py-2 font-semibold text-white',
                   'rounded-lg hover:from-pink-600 hover:to-red-600 focus:outline-none',
@@ -289,7 +283,7 @@ function EditProfilePage() {
                   'transition-all duration-200 disabled:cursor-not-allowed'
                 )}
               >
-                {saving ? 'Saving...' : 'Save Changes'}
+                {isSubmitting ? 'Saving...' : 'Save Changes'}
               </button>
             </div>
           </form>

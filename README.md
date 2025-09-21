@@ -10,11 +10,14 @@
   <br />
   <div>
     <img src="https://img.shields.io/badge/-Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js" />
+    <img src="https://img.shields.io/badge/-React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
     <img src="https://img.shields.io/badge/-Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
     <img src="https://img.shields.io/badge/-Stream-0057FF?style=for-the-badge&logo=getstream&logoColor=white" alt="Stream" />
     <img src="https://img.shields.io/badge/-PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
     <img src="https://img.shields.io/badge/-TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
     <img src="https://img.shields.io/badge/-TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+    <img src="https://img.shields.io/badge/-React_Hook_Form-EC5990?style=for-the-badge&logo=react&logoColor=white" alt="React Hook Form" />
+    <img src="https://img.shields.io/badge/-Zod-3068B7?style=for-the-badge&logo=zod&logoColor=white" alt="Zod" />
   </div>
   <h3 align="center">Build a FullStack Dating Website with Next.js, Supabase, Stream & TailwindCSS</h3>
   <div align="center">
@@ -45,26 +48,108 @@ In this in-depth tutorial you'll build a production-ready **FullStack Dating Web
 
 ## ⚙️ Tech Stack
 
-- **Next.js (App Router)** – Server & client components for fast SSR/SSG
-- **Supabase** – Postgres database, auth, RLS, storage & realtime
-- [**Stream** – Real-time chat & video/call SDK](https://getstream.io/chat/sdk/react/?utm_source=youtube&utm_medium=referral&utm_content=&utm_campaign=pedro2025)
-- **TailwindCSS** – Utility-first styling & responsive layouts
-- **TypeScript** – Type-safe codebase
-- **Vercel** – Recommended hosting & serverless deployment
+### Frontend Framework
+
+- **Next.js 15.5.3** — React framework with App Router, server components, and Turbopack
+- **React 19.1.1** — Latest React with concurrent features and improved performance
+- **TypeScript 5.9.2** — Full type safety and modern JavaScript features
+
+### Backend & Database
+
+- **Supabase** — PostgreSQL database, authentication, storage, and real-time subscriptions
+- **Supabase SSR** — Server-side rendering support for Supabase
+- **Row Level Security (RLS)** — Database-level access control and security
+
+### Real-time Features
+
+- **Stream Chat** — Real-time messaging infrastructure
+- **Stream Chat React** — React components for chat functionality
+- **Stream Video React SDK** — WebRTC-based video calling capabilities
+
+### Forms & Validation
+
+- **React Hook Form** — Performant forms with minimal re-renders
+- **Zod** — TypeScript-first schema validation
+- **@hookform/resolvers** — Zod integration for React Hook Form
+
+### Styling & UI
+
+- **TailwindCSS 4.1.13** — Utility-first CSS framework
+- **Tailwind Merge** — Intelligent class name merging
+- **clsx** — Conditional CSS class utilities
+
+### Development Tools
+
+- **ESLint** — Code linting and quality enforcement
+- **Prettier** — Code formatting with Tailwind CSS plugin
+- **@faker-js/faker** — Realistic fake data generation for testing
+- **tsx** — TypeScript execution for scripts
+
+### Deployment & Hosting
+
+- **Vercel** — Serverless deployment platform optimized for Next.js
+- **Environment Configuration** — Secure handling of API keys and secrets
 
 ---
 
 ## ⚡️ Features
 
-- 🔒 **Auth** — Secure sign-up, sign-in, and session handling
-- 🧾 **Postgres Schema** — Profiles, matches, messages, calls (RLS-ready)
-- 👤 **Profile Page** — View & edit user profile with photos & bio
-- 🧪 **Fake Profiles Seeder** — Seed the database for local testing
-- ❤️ **Matching System** — Discover, like & match users
-- 💬 **Realtime Chat** — One-to-one messaging via Stream
-- 🎥 **Live Video Calls** — WebRTC-backed calls using Stream SDK
-- 📱 **Responsive UI** — Mobile-first design with Tailwind
-- ✅ **Production-ready** — Env config, deployment guide, and seeding scripts
+### � Authentication & Security
+
+- **Supabase Auth** — Secure user authentication with email/password
+- **Row Level Security (RLS)** — Database-level security policies
+- **Session Management** — Persistent user sessions across app reloads
+
+### 👤 User Profiles & Management
+
+- **Profile Creation & Editing** — Complete user profiles with photos, bio, and preferences
+- **Photo Upload** — Cloud storage integration for profile pictures
+- **User Preferences** — Age range, distance, and gender preferences
+- **Profile Validation** — Form validation with Zod schemas
+
+### ❤️ Matching System
+
+- **Discovery Feed** — Browse potential matches
+- **Like/Unlike System** — Express interest in other users
+- **Mutual Matching** — Automatic match creation when both users like each other
+- **Match Notifications** — Real-time match alerts
+
+### 💬 Real-time Communication
+
+- **Stream Chat Integration** — One-to-one messaging with real-time updates
+- **Typing Indicators** — See when others are typing
+- **Message History** — Persistent chat history
+- **Online Status** — User presence indicators
+
+### 🎥 Video Calling
+
+- **WebRTC Video Calls** — High-quality one-to-one video calls
+- **Stream Video SDK** — Professional video infrastructure
+- **Call Notifications** — Incoming call alerts
+- **Video Call Interface** — Full-screen video experience
+
+### 🎨 Modern UI/UX
+
+- **Responsive Design** — Mobile-first approach with TailwindCSS
+- **Dark/Light Mode Support** — Theme-aware components
+- **Form Validation** — React Hook Form with real-time validation
+- **Loading States** — Smooth loading indicators and transitions
+- **Error Handling** — Comprehensive error boundaries and user feedback
+
+### 🛠️ Developer Experience
+
+- **TypeScript** — Full type safety throughout the application
+- **ESLint & Prettier** — Code quality and formatting standards
+- **Fake Data Seeding** — Development testing with realistic user data
+- **Environment Configuration** — Secure environment variable management
+
+### 🚀 Performance & Production
+
+- **Next.js App Router** — Modern routing with server components
+- **Server-Side Rendering** — Fast initial page loads
+- **Database Optimization** — Indexed queries and efficient data fetching
+- **Real-time Updates** — Live data synchronization
+- **Production Deployment** — Vercel-ready configuration
 
 ---
 
@@ -73,6 +158,7 @@ In this in-depth tutorial you'll build a production-ready **FullStack Dating Web
 ### Prerequisites
 
 - [Node.js (v18+)](https://nodejs.org/)
+- [pnpm](https://pnpm.io/) — Fast, disk space efficient package manager
 - [Supabase account](https://app.supabase.com/)
 - [Stream account](https://getstream.io/chat/sdk/react/?utm_source=youtube&utm_medium=referral&utm_content=&utm_campaign=pedro2025)
 - [Vercel account](https://vercel.com/) for deployment
@@ -287,7 +373,7 @@ CREATE POLICY "Users can view their own matches" ON public.matches
 # replace with your repo when created
 git clone https://github.com/amandeep90s/fullstack-dating-app.git
 cd fullstack-dating-app
-npm install
+pnpm install
 ```
 
 ### Environment
@@ -313,7 +399,7 @@ cp .env.example .env.local
 4. Optionally run the seeder script to create fake profiles for testing:
 
 ```bash
-npm run seed:profiles
+pnpm run create-fake-profiles
 ```
 
 ### Code Formatting

@@ -1,260 +1,218 @@
 'use client';
 
-import { FullPageLoader } from '@/components';
+import { FormInput, FullPageLoader } from '@/components';
 import { useAuth } from '@/contexts/auth-context';
+import { BACKGROUND_STYLES, BUTTON_STYLES, TEXT_STYLES } from '@/lib/constants/styles';
 import { cn } from '@/lib/helpers/helpers';
+import type { SignInFormData, SignUpFormData } from '@/lib/schemas/auth';
+import { signInSchema, signUpSchema } from '@/lib/schemas/auth';
 import { createClient } from '@/lib/supabase/client';
+import { handleError } from '@/lib/utils/errors';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [validationErrors, setValidationErrors] = useState<{
-    name?: string;
-    email?: string;
-    password?: string;
-  }>({});
-  const supabase = createClient();
-  const { user, loading: authLoading } = useAuth();
+
+  const { user, loading: authLoading, clearError } = useAuth();
   const router = useRouter();
+  const supabase = useMemo(() => createClient(), []);
+
+  // Separate forms for sign in and sign up
+  const signInForm = useForm<SignInFormData>({
+    resolver: zodResolver(signInSchema),
+    mode: 'onChange',
+    defaultValues: { email: '', password: '' },
+  });
+
+  const signUpForm = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema),
+    mode: 'onChange',
+    defaultValues: { name: '', email: '', password: '' },
+  });
 
   useEffect(() => {
     if (user && !authLoading) {
-      // Check if there's a redirectTo parameter to send user back to original page
       const urlParams = new URLSearchParams(window.location.search);
       const redirectTo = urlParams.get('redirectTo');
       router.push(redirectTo || '/');
     }
   }, [user, authLoading, router]);
 
-  // Show loading screen while checking auth status
+  // Clear errors when switching modes
+  useEffect(() => {
+    setError(null);
+    clearError();
+    if (isSignUp) {
+      signUpForm.reset({ name: '', email: '', password: '' });
+    } else {
+      signInForm.reset({ email: '', password: '' });
+    }
+  }, [isSignUp, signInForm, signUpForm, clearError]);
+
+  const toggleMode = useCallback(() => {
+    setIsSignUp((prev) => !prev);
+  }, []);
+
+  const onSignInSubmit = useCallback(
+    async (data: SignInFormData) => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: data.email,
+          password: data.password,
+        });
+
+        if (error) throw error;
+      } catch (error) {
+        const handledError = handleError(error);
+        setError(handledError.message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [supabase]
+  );
+
+  const onSignUpSubmit = useCallback(
+    async (data: SignUpFormData) => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const { data: result, error } = await supabase.auth.signUp({
+          email: data.email,
+          password: data.password,
+          options: {
+            data: { full_name: data.name },
+          },
+        });
+
+        if (error) throw error;
+
+        if (result.user && !result.session) {
+          setError('Please check your email for a confirmation link.');
+          signUpForm.reset();
+          return;
+        }
+      } catch (error) {
+        const handledError = handleError(error);
+        setError(handledError.message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [supabase, signUpForm]
+  );
+
   if (authLoading) {
     return <FullPageLoader />;
   }
 
-  function validateForm() {
-    const errors: { name?: string; email?: string; password?: string } = {};
-
-    if (isSignUp && !name.trim()) {
-      errors.name = 'Name is required';
-    }
-
-    if (!email.trim()) {
-      errors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errors.email = 'Please enter a valid email address';
-    }
-
-    if (!password) {
-      errors.password = 'Password is required';
-    } else if (password.length < 6) {
-      errors.password = 'Password must be at least 6 characters long';
-    }
-
-    setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
-  }
-
-  function resetForm() {
-    setName('');
-    setEmail('');
-    setPassword('');
-    setError(null);
-    setValidationErrors({});
-  }
-
-  async function handleAuth(e: React.FormEvent) {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      if (isSignUp) {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { full_name: name },
-          },
-        });
-        if (error) throw error;
-        if (data.user && !data.session) {
-          setError('Please check your email for a confirmation link.');
-          resetForm();
-          return;
-        }
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-      }
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return (
-    <div
-      className={cn(
-        'flex min-h-full items-center justify-center bg-gradient-to-br from-pink-100 to-red-100',
-        'dark:from-gray-900 dark:to-gray-800'
-      )}
-    >
+    <div className={cn(BACKGROUND_STYLES.gradient, BACKGROUND_STYLES.fullHeight)}>
       <div className={cn('w-full max-w-md space-y-8 p-8')}>
         <div className={cn('text-center')}>
-          <h1 className={cn('mb-2 text-4xl font-bold text-gray-900 dark:text-white')}>
-            StreamMatch
-          </h1>
-
-          <p className={cn('text-gray-600 dark:text-gray-400')}>
+          <h1 className={cn('mb-2 text-4xl font-bold', TEXT_STYLES.heading)}>StreamMatch</h1>
+          <p className={cn(TEXT_STYLES.subheading)}>
             {isSignUp ? 'Create Your Account' : 'Sign in to your account'}
           </p>
         </div>
 
-        <form className={cn('space-y-6')} onSubmit={handleAuth}>
-          {isSignUp && (
-            <div>
-              <label
-                htmlFor="name"
-                className={cn('block text-sm font-medium text-gray-700 dark:text-gray-300')}
-              >
-                Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                id="name"
-                value={name}
-                required
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your name"
-                className={cn(
-                  'mt-1 block w-full rounded-md border px-3 py-2 shadow-sm',
-                  'placeholder-gray-400 focus:border-pink-500 focus:ring-pink-500 focus:outline-none',
-                  'dark:bg-gray-800 dark:text-white',
-                  validationErrors.name
-                    ? 'border-red-500 dark:border-red-500'
-                    : 'border-gray-300 dark:border-gray-600'
-                )}
-                disabled={loading}
-                autoComplete="name"
-              />
-              {validationErrors.name && (
-                <p className={cn('mt-1 text-sm text-red-600 dark:text-red-400')}>
-                  {validationErrors.name}
-                </p>
-              )}
-            </div>
-          )}
-          <div>
-            <label
-              htmlFor="email"
-              className={cn('block text-sm font-medium text-gray-700 dark:text-gray-300')}
-            >
-              Email
-            </label>
-            <input
+        {isSignUp ? (
+          <form className={cn('space-y-6')} onSubmit={signUpForm.handleSubmit(onSignUpSubmit)}>
+            <FormInput
+              type="text"
+              label="Name"
+              placeholder="Enter your name"
+              disabled={loading}
+              required
+              autoComplete="name"
+              error={signUpForm.formState.errors.name}
+              {...signUpForm.register('name')}
+            />
+
+            <FormInput
               type="email"
-              name="email"
-              id="email"
-              value={email}
-              required
-              onChange={(e) => setEmail(e.target.value)}
+              label="Email"
               placeholder="Enter your email"
-              className={cn(
-                'mt-1 block w-full rounded-md border px-3 py-2 shadow-sm',
-                'placeholder-gray-400 focus:border-pink-500 focus:ring-pink-500 focus:outline-none',
-                'dark:bg-gray-800 dark:text-white',
-                validationErrors.email
-                  ? 'border-red-500 dark:border-red-500'
-                  : 'border-gray-300 dark:border-gray-600'
-              )}
               disabled={loading}
-              autoComplete="email"
-            />
-            {validationErrors.email && (
-              <p className={cn('mt-1 text-sm text-red-600 dark:text-red-400')}>
-                {validationErrors.email}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className={cn('block text-sm font-medium text-gray-700 dark:text-gray-300')}
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={password}
               required
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              className={cn(
-                'mt-1 block w-full rounded-md border px-3 py-2 shadow-sm',
-                'placeholder-gray-400 focus:border-pink-500 focus:ring-pink-500 focus:outline-none',
-                'dark:bg-gray-800 dark:text-white',
-                validationErrors.password
-                  ? 'border-red-500 dark:border-red-500'
-                  : 'border-gray-300 dark:border-gray-600'
-              )}
-              disabled={loading}
-              autoComplete={isSignUp ? 'new-password' : 'current-password'}
+              autoComplete="email"
+              error={signUpForm.formState.errors.email}
+              {...signUpForm.register('email')}
             />
-            {validationErrors.password && (
-              <p className={cn('mt-1 text-sm text-red-600 dark:text-red-400')}>
-                {validationErrors.password}
-              </p>
-            )}
-          </div>
 
-          {error && (
-            <div className={cn('text-center text-sm text-red-600 dark:text-red-400')}>{error}</div>
-          )}
+            <FormInput
+              type="password"
+              label="Password"
+              placeholder="Enter your password"
+              disabled={loading}
+              required
+              autoComplete="new-password"
+              error={signUpForm.formState.errors.password}
+              {...signUpForm.register('password')}
+            />
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={cn(
-              'flex w-full items-center justify-center rounded-md border border-transparent px-4 py-2 shadow-sm',
-              'min-h-[44px] cursor-pointer bg-gradient-to-r from-pink-500 to-red-500 text-sm font-medium text-white',
-              'hover:from-pink-600 hover:to-red-600 focus:ring-2 focus:ring-offset-2 focus:outline-none',
-              'transition-colors focus:ring-pink-500 disabled:cursor-not-allowed disabled:opacity-50'
-            )}
-          >
-            {loading ? 'Loading...' : isSignUp ? 'Sign Up' : 'Sign In'}
-          </button>
-        </form>
+            {error && <div className={cn('text-center text-sm', TEXT_STYLES.error)}>{error}</div>}
+
+            <button
+              type="submit"
+              disabled={loading || !signUpForm.formState.isValid}
+              className={cn(BUTTON_STYLES.primary, 'min-h-[44px] w-full')}
+            >
+              {loading ? 'Loading...' : 'Sign Up'}
+            </button>
+          </form>
+        ) : (
+          <form className={cn('space-y-6')} onSubmit={signInForm.handleSubmit(onSignInSubmit)}>
+            <FormInput
+              type="email"
+              label="Email"
+              placeholder="Enter your email"
+              disabled={loading}
+              required
+              autoComplete="email"
+              error={signInForm.formState.errors.email}
+              {...signInForm.register('email')}
+            />
+
+            <FormInput
+              type="password"
+              label="Password"
+              placeholder="Enter your password"
+              disabled={loading}
+              required
+              autoComplete="current-password"
+              error={signInForm.formState.errors.password}
+              {...signInForm.register('password')}
+            />
+
+            {error && <div className={cn('text-center text-sm', TEXT_STYLES.error)}>{error}</div>}
+
+            <button
+              type="submit"
+              disabled={loading || !signInForm.formState.isValid}
+              className={cn(BUTTON_STYLES.primary, 'min-h-[44px] w-full')}
+            >
+              {loading ? 'Loading...' : 'Sign In'}
+            </button>
+          </form>
+        )}
 
         <div className={cn('text-center')}>
           <button
             type="button"
-            onClick={() => {
-              setIsSignUp((prev) => !prev);
-              resetForm();
-            }}
+            onClick={toggleMode}
             className={cn(
-              'cursor-pointer text-sm text-pink-600 hover:text-pink-500 dark:text-pink-400 dark:hover:text-pink-300',
-              'focus:underline focus:outline-none'
+              'text-sm text-pink-600 hover:text-pink-500 dark:text-pink-400 dark:hover:text-pink-300',
+              'cursor-pointer transition-colors focus:underline focus:outline-none'
             )}
           >
             {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}

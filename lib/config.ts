@@ -6,7 +6,7 @@ export const config = {
 
 // Validate required environment variables
 function validateConfig() {
-  const missingVars = [];
+  const missingVars: string[] = [];
 
   if (!config.supabaseUrl) {
     missingVars.push('NEXT_PUBLIC_SUPABASE_URL');
