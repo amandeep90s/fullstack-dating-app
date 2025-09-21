@@ -32,14 +32,16 @@ export default function ChatHeader({ user, onVideoCall }: ChatHeaderProps) {
           </button>
 
           <div className={cn('flex items-center space-x-3')}>
-            <div className={cn('relative h-12 w-12 overflow-hidden rounded-full')}>
-              <Image
-                src={user.avatar_url}
-                alt={user.full_name}
-                className={cn('h-full w-full object-cover')}
-                height={48}
-                width={48}
-              />
+            <div className={cn('relative h-12 w-12')}>
+              <div className={cn('h-full w-full overflow-hidden rounded-full')}>
+                <Image
+                  src={user.avatar_url}
+                  alt={user.full_name}
+                  className={cn('h-full w-full object-cover')}
+                  height={48}
+                  width={48}
+                />
+              </div>
               <div
                 className={cn(
                   'absolute right-0 bottom-0 h-3 w-3 rounded-full border-2 border-white bg-green-500 dark:border-gray-800'

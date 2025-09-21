@@ -102,3 +102,12 @@ export interface ChatData {
   lastMessageTime: string;
   unreadCount: number;
 }
+
+// Message types
+export interface Message {
+  id: string;
+  text: string;
+  sender: 'me' | 'other';
+  timestamp: Date;
+  user_id: string;
+}
