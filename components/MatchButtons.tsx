@@ -29,7 +29,7 @@ const MatchButtons = memo(function MatchButtons({ onLike, onDislike }: MatchButt
         aria-label="Dislike"
         type="button"
       >
-        <XMarkIcon className="h-8 w-8 text-red-500" />
+        <XMarkIcon className={cn('h-8 w-8 text-red-500')} />
       </button>
       <button
         onClick={handleLike}
@@ -42,7 +42,7 @@ const MatchButtons = memo(function MatchButtons({ onLike, onDislike }: MatchButt
         aria-label="Like"
         type="button"
       >
-        <HeartIcon className="h-8 w-8 text-green-500" />
+        <HeartIcon className={cn('h-8 w-8 text-green-500')} />
       </button>
     </div>
   );

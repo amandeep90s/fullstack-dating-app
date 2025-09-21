@@ -71,10 +71,14 @@ const NavigationLinks = memo(function NavigationLinks() {
     <div className={cn('hidden items-center space-x-8 md:flex')}>
       {navigationItems.map(({ href, label }) => (
         <Link key={href} href={href} className={getLinkClassName(href)}>
-          <span className="relative">
+          <span className={cn('relative')}>
             {label}
             {isActive(href) && (
-              <span className="absolute right-0 -bottom-1 left-0 h-0.5 bg-pink-500 dark:bg-pink-400" />
+              <span
+                className={cn(
+                  'absolute right-0 -bottom-1 left-0 h-0.5 bg-pink-500 dark:bg-pink-400'
+                )}
+              />
             )}
           </span>
         </Link>
@@ -104,7 +108,7 @@ const MobileNavigationLinks = memo(function MobileNavigationLinks({
   };
 
   return (
-    <div className="space-y-1 px-2 pt-2 pb-3">
+    <div className={cn('space-y-1 px-2 pt-2 pb-3')}>
       {navigationItems.map(({ href, label }) => (
         <Link
           key={href}
@@ -158,15 +162,17 @@ export const Navbar = memo(function Navbar() {
           {user && (
             <button
               type="button"
-              className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:ring-2 focus:ring-pink-500 focus:outline-none focus:ring-inset md:hidden dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+              className={cn(
+                'inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:ring-2 focus:ring-pink-500 focus:outline-none focus:ring-inset md:hidden dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-200'
+              )}
               aria-controls="mobile-menu"
               aria-expanded={isMobileMenuOpen}
               onClick={toggleMobileMenu}
             >
-              <span className="sr-only">Open main menu</span>
+              <span className={cn('sr-only')}>Open main menu</span>
               {!isMobileMenuOpen ? (
                 <svg
-                  className="block h-6 w-6"
+                  className={cn('block h-6 w-6')}
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
@@ -180,7 +186,7 @@ export const Navbar = memo(function Navbar() {
                 </svg>
               ) : (
                 <svg
-                  className="block h-6 w-6"
+                  className={cn('block h-6 w-6')}
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
@@ -209,10 +215,13 @@ export const Navbar = memo(function Navbar() {
 
         {/* Mobile menu */}
         {user && isMobileMenuOpen && (
-          <div className="animate-in slide-in-from-top-2 duration-300 md:hidden" id="mobile-menu">
-            <div className="border-t border-gray-200/50 dark:border-gray-700/50">
+          <div
+            className={cn('animate-in slide-in-from-top-2 duration-300 md:hidden')}
+            id="mobile-menu"
+          >
+            <div className={cn('border-t border-gray-200/50 dark:border-gray-700/50')}>
               <MobileNavigationLinks onClose={closeMobileMenu} />
-              <div className="border-t border-gray-200/30 px-2 py-3 dark:border-gray-700/30">
+              <div className={cn('border-t border-gray-200/30 px-2 py-3 dark:border-gray-700/30')}>
                 {user ? (
                   <button
                     type="button"

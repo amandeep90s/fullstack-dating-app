@@ -58,7 +58,7 @@ export function PhotoUpload({ onPhotoUploaded }: PhotoUploadProps) {
           id="profilePhoto"
           ref={fileInputRef}
           onChange={handleFileSelect}
-          className="hidden"
+          className={cn('hidden')}
           accept="image/*"
         />
 
@@ -73,9 +73,13 @@ export function PhotoUpload({ onPhotoUploaded }: PhotoUploadProps) {
           )}
         >
           {uploading ? (
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+            <div
+              className={cn(
+                'h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent'
+              )}
+            ></div>
           ) : (
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={cn('h-4 w-4')} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"

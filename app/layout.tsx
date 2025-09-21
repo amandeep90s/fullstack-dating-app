@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className={cn('h-full')}>
       <body className={cn(plexSans.variable, plexMono.variable, 'h-full antialiased')}>
         <ErrorBoundary>
           <AuthProvider>

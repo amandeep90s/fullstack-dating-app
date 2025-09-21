@@ -100,13 +100,13 @@ function MatchesListPage() {
                     </div>
 
                     <div className={cn('min-w-0 flex-1')}>
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      <h3 className={cn('text-lg font-semibold text-gray-900 dark:text-white')}>
                         {match.full_name}, {calculateAge(match.birthdate)}
                       </h3>
-                      <p className="mb-1 text-sm text-gray-600 dark:text-gray-400">
+                      <p className={cn('mb-1 text-sm text-gray-600 dark:text-gray-400')}>
                         @{match.username}
                       </p>
-                      <p className="line-clamp-2 text-sm text-gray-600 dark:text-gray-400">
+                      <p className={cn('line-clamp-2 text-sm text-gray-600 dark:text-gray-400')}>
                         {match.bio}
                       </p>
                     </div>

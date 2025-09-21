@@ -54,15 +54,21 @@ function ChatPage() {
 
         {chats.length === 0 ? (
           <div className={cn('mx-auto max-w-md p-8 text-center')}>
-            <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-500">
-              <span className="text-4xl">💬</span>
+            <div
+              className={cn(
+                'mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-500'
+              )}
+            >
+              <span className={cn('text-4xl')}>💬</span>
             </div>
-            <p className="mb-6 text-gray-600 dark:text-gray-400">
+            <p className={cn('mb-6 text-gray-600 dark:text-gray-400')}>
               Start swiping to find matches and begin conversations!
             </p>
             <Link
               href="/matches"
-              className="rounded-full bg-gradient-to-r from-pink-500 to-red-500 px-6 py-3 font-semibold text-white transition-all duration-200 hover:from-pink-600 hover:to-red-600"
+              className={cn(
+                'rounded-full bg-gradient-to-r from-pink-500 to-red-500 px-6 py-3 font-semibold text-white transition-all duration-200 hover:from-pink-600 hover:to-red-600'
+              )}
             >
               Start Swiping
             </Link>

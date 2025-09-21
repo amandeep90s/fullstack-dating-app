@@ -109,7 +109,7 @@ function EditProfilePage() {
                     <Image
                       src={formData.avatar_url || '/default-avatar.png'}
                       alt="Profile"
-                      className="h-full w-full object-cover"
+                      className={cn('h-full w-full object-cover')}
                       height={96}
                       width={96}
                       priority
@@ -172,7 +172,9 @@ function EditProfilePage() {
                   value={formData.username}
                   onChange={handleInputChange}
                   required
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-pink-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                  className={cn(
+                    'w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-pink-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white'
+                  )}
                   placeholder="Choose a username"
                 />
               </div>
@@ -183,7 +185,7 @@ function EditProfilePage() {
               <div>
                 <label
                   htmlFor="gender"
-                  className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  className={cn('mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300')}
                 >
                   Gender <span className={cn('text-red-600 dark:text-red-400')}>*</span>
                 </label>

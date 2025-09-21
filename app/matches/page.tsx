@@ -99,9 +99,9 @@ function MatchesPage() {
               'mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-r from-pink-500 to-red-500'
             )}
           >
-            <span className="text-4xl">💕</span>
+            <span className={cn('text-4xl')}>💕</span>
           </div>
-          <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+          <h2 className={cn('mb-4 text-2xl font-bold text-gray-900 dark:text-white')}>
             No more profiles to show
           </h2>
           <p className={cn('mb-6 text-gray-600 dark:text-gray-400')}>
@@ -153,7 +153,7 @@ function MatchesPage() {
               title="Go Back"
             >
               <svg
-                className="h-6 w-6 text-gray-700 dark:text-gray-300"
+                className={cn('h-6 w-6 text-gray-700 dark:text-gray-300')}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
