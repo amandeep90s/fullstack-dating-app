@@ -4,8 +4,8 @@
 
 <div align="center">
   <br />
-  <a href="https://youtu.be/8QDT776XtO8" target="_blank">
-    <img width="1280" height="720" alt="Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of 10,000 REACT COMPONENTS (5)" src="https://github.com/user-attachments/assets/34f397f9-f989-4c33-a3fd-de13aa6f4305" />
+  <a href="https://github.com/amandeep90s">
+    <img width="1512" height="799" alt="Screenshot 2025-09-21 at 7 13 32 PM" src="https://github.com/user-attachments/assets/725dc329-95da-43db-b3e5-74ff824caee4" />
   </a>
   <br />
   <div>
