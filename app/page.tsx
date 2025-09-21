@@ -1,111 +1,116 @@
-import { cn } from '@/lib/helpers/helpers';
-import type { Metadata } from 'next';
-import Image from 'next/image';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'StreamMatch - Modern Dating App',
-  description:
-    'Connect with like-minded people in your area. Join StreamMatch today and find meaningful connections.',
-};
+import { FullPageLoader } from '@/components';
+import { useAuth } from '@/contexts/auth-context';
+import { cn } from '@/lib/helpers/helpers';
+import Link from 'next/link';
 
 export default function Home() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <FullPageLoader text="StreamMatch" />;
+  }
+
   return (
     <div
       className={cn(
-        'grid grid-rows-[20px_1fr_20px] items-center justify-items-center font-sans',
-        'min-h-full gap-16 p-8 pb-20 sm:p-20'
+        'flex min-h-full items-center justify-center bg-gradient-to-br from-slate-50',
+        'to-pink-50 dark:from-slate-900 dark:to-slate-800'
       )}
     >
-      <main className={cn('row-start-2 flex flex-col items-center gap-[32px] sm:items-start')}>
-        <Image
-          className={cn('dark:invert')}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-          sizes="180px"
-        />
-        <ol className={cn('list-inside list-decimal text-center font-mono text-sm/6 sm:text-left')}>
-          <li className={cn('mb-2 tracking-[-.01em]')}>
-            Get started by editing{' '}
-            <code
+      {/* Hero Section - Full Page */}
+      <section className={cn('relative w-full overflow-hidden')}>
+        <div className={cn('absolute inset-0')}></div>
+        <div className={cn('relative container mx-auto px-6 py-20 lg:py-32')}>
+          <div className={cn('mx-auto max-w-4xl text-center')}>
+            <h1 className={cn('mb-6 text-5xl font-bold text-gray-900 lg:text-7xl dark:text-white')}>
+              Find Your Perfect
+              <span
+                className={cn(
+                  'block bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent'
+                )}
+              >
+                StreamMatch
+              </span>
+            </h1>
+            <p
               className={cn(
-                'rounded bg-black/[.05] px-1 py-0.5 font-mono font-semibold dark:bg-white/[.06]'
+                'mb-8 text-xl leading-relaxed text-gray-600 lg:text-2xl dark:text-gray-300'
               )}
             >
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className={cn('tracking-[-.01em]')}>Save and see your changes instantly.</li>
-        </ol>
+              Connect with like-minded people through live streaming, meaningful conversations, and
+              authentic connections.
+            </p>
 
-        <div className={cn('flex flex-col items-center gap-4 sm:flex-row')}>
-          <a
-            className={cn(
-              'flex rounded-full border border-solid border-transparent transition-colors',
-              'bg-foreground text-background items-center justify-center gap-2',
-              'text-sm font-medium hover:bg-[#383838] dark:hover:bg-[#ccc]',
-              'h-10 px-4 sm:h-12 sm:w-auto sm:px-5 sm:text-base'
+            {user ? (
+              <div className={cn('flex flex-col justify-center gap-4 sm:flex-row')}>
+                <Link
+                  href="/matches"
+                  className={cn(
+                    'inline-flex transform items-center rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:from-pink-600 hover:to-purple-700 hover:shadow-xl'
+                  )}
+                >
+                  Start Discovering
+                  <svg
+                    className={cn('ml-2 h-5 w-5')}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </Link>
+                <Link
+                  href="/profile"
+                  className={cn(
+                    'inline-flex items-center rounded-full border-2 border-pink-500 px-8 py-4 text-lg font-semibold text-pink-500 transition-all duration-300 hover:bg-pink-500 hover:text-white dark:text-pink-400'
+                  )}
+                >
+                  View Profile
+                </Link>
+              </div>
+            ) : (
+              <div className={cn('flex flex-col justify-center gap-4 sm:flex-row')}>
+                <Link
+                  href="/auth"
+                  className={cn(
+                    'inline-flex transform items-center rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:from-pink-600 hover:to-purple-700 hover:shadow-xl'
+                  )}
+                >
+                  Get Started
+                  <svg
+                    className={cn('ml-2 h-5 w-5')}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </Link>
+                <Link
+                  href="/matches"
+                  className={cn(
+                    'inline-flex items-center rounded-full border-2 border-pink-500 px-8 py-4 text-lg font-semibold text-pink-500 transition-all duration-300 hover:bg-pink-500 hover:text-white dark:text-pink-400'
+                  )}
+                >
+                  Explore
+                </Link>
+              </div>
             )}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={cn('dark:invert')}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className={cn(
-              'rounded-full border border-solid border-black/[.08] dark:border-white/[.145]',
-              'flex items-center justify-center transition-colors hover:bg-[#f2f2f2]',
-              'text-sm font-medium hover:border-transparent sm:text-base dark:hover:bg-[#1a1a1a]',
-              'h-10 w-full px-4 sm:h-12 sm:w-auto sm:px-5 md:w-[158px]'
-            )}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
         </div>
-      </main>
-      <footer className={cn('row-start-3 flex flex-wrap items-center justify-center gap-[24px]')}>
-        <a
-          className={cn('flex items-center gap-2 hover:underline hover:underline-offset-4')}
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image aria-hidden src="/file.svg" alt="File icon" width={16} height={16} />
-          Learn
-        </a>
-        <a
-          className={cn('flex items-center gap-2 hover:underline hover:underline-offset-4')}
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image aria-hidden src="/window.svg" alt="Window icon" width={16} height={16} />
-          Examples
-        </a>
-        <a
-          className={cn('flex items-center gap-2 hover:underline hover:underline-offset-4')}
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image aria-hidden src="/globe.svg" alt="Globe icon" width={16} height={16} />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
     </div>
   );
 }
